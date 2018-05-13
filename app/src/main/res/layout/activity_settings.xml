@@ -22,7 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Слева"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:theme="@style/MyRadioButton"
+            />
 
         <RadioButton
             android:id="@+id/right"
@@ -30,7 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Справа"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            android:theme="@style/MyRadioButton"/>
 
     </RadioGroup>
 

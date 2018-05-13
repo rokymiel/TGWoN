@@ -132,9 +132,14 @@ public class TheGame extends View implements Runnable{
                 Enemy enemies = i.next();
 
                 if (Math.abs(balls.x - enemies.x) <=30 && Math.abs(balls.y - enemies.y) <30) {
-                    i.remove();
-                    b.remove();
-                    killCount++;
+                    try {
+                        i.remove();
+                        b.remove();
+                    }
+                    catch (IllegalStateException e){
+
+                    }
+
                    // text.setText(killCount);
                 }
             }
