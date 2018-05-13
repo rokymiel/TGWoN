@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#969696">
+
+
+    <RadioGroup
+        android:id="@+id/groupPosition"
+        android:layout_width="195dp"
+        android:layout_height="77dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="98dp">
+
+        <RadioButton
+            android:id="@+id/left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Слева"
+            android:textSize="15dp"/>
+
+        <RadioButton
+            android:id="@+id/right"
+            android:layout_width="224dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Справа"
+            android:textSize="15dp"/>
+
+    </RadioGroup>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/sett1"
+        android:scaleType="fitStart"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="191dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="12dp"
+        android:text="Настройки"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/groupPosition"
+        android:layout_alignStart="@+id/groupPosition"
+        android:layout_marginBottom="-98dp"
+        android:textColor="@color/black"
+        android:textSize="19dp"
+        android:text="Местоположение кнопок стрельбы" />
+
+</RelativeLayout>
