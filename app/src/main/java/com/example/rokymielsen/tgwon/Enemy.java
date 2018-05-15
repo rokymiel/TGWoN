@@ -9,6 +9,8 @@ public class Enemy {
     float r =50;
     float vx=0,vy=0;
     float endX=300, endY=300;
+    boolean life=true;
+    int health=100;
     Paint paint= new Paint();
     Enemy(float x, float y){
         this.x=x;
@@ -16,6 +18,7 @@ public class Enemy {
         paint.setColor(Color.RED);
 
     }
+
     void setSpeed(float endX, float endY){
         this.endX=endX;
         this.endY=endY;

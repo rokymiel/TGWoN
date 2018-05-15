@@ -39,10 +39,11 @@ public class TheGame extends View implements Runnable{
 
         hero= new ControlledHero(500,400);
         enemiesCount=1;
-        enemy.add(new Enemy(900,200));
+        //enemy.add(new Enemy(900,200));
         MyThread myThread = new MyThread();
         myThread.start();
         thread.start();
+
 
     }
 
@@ -154,7 +155,7 @@ public class TheGame extends View implements Runnable{
             heroX=hero.x;
             heroY=hero.y;
             ballEnemy.add(createSprite(R.drawable.bullet,enemyX,enemyY,heroX,heroY));
-            Log.d(TAG,"ENEMIES");
+            //Log.d(TAG,"ENEMIES");
         }
     }
 
@@ -175,22 +176,27 @@ public class TheGame extends View implements Runnable{
         }
     }
 
-
+    int damdge=50;
+    int flag=0;
     private void testCollision() {
         Iterator<Bullet> b = ball.iterator();
         while(b.hasNext()) {
             Bullet balls = b.next();
             Iterator<Enemy> i = enemy.iterator();
             while(i.hasNext()) {
-                Enemy enemies = i.next();
-
+                Enemy enemies = i.next(); //((enemies.x-balls.x)*(enemies.x-balls.x)+(enemies.y-balls.y)*(enemies.y-balls.y)<=2490 )
                 if (Math.abs(balls.x - enemies.x) <=30 && Math.abs(balls.y - enemies.y) <30) {
-                    try {
-                        i.remove();
-                        b.remove();
-                    }
-                    catch (IllegalStateException e){
+                    flag++;
+                    if (flag%3==1){ enemies.health-=damdge;Log.d(TAG,"ENEMIES"+ enemies.health);}
+                    //Log.d(TAG,"ENEMIES"+ flag);
+                    if (enemies.health <=0) {
+                        try {
+                            i.remove();
+                            b.remove();
+                            killCount++;
+                        } catch (IllegalStateException e) {
 
+                        }
                     }
 
                    // text.setText(killCount);
