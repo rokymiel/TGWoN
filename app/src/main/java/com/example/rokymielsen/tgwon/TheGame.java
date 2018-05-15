@@ -5,6 +5,7 @@ package com.example.rokymielsen.tgwon;
         import android.graphics.BitmapFactory;
         import android.graphics.Canvas;
         import android.util.AttributeSet;
+        import android.util.Log;
         import android.view.MotionEvent;
         import android.view.View;
         import android.widget.TextView;
@@ -15,6 +16,8 @@ package com.example.rokymielsen.tgwon;
         import java.util.List;
         import java.util.Random;
 
+        import static android.content.ContentValues.TAG;
+
 /**
  * Created by Roky Mielsen on 21.04.2018.
  */
@@ -24,6 +27,7 @@ public class TheGame extends View implements Runnable{
     int enemiesCount;
     int killCount=0;
     private List<Bullet> ball = new ArrayList<Bullet>();
+    private List<Bullet> ballEnemy = new ArrayList<Bullet>();
     private List<Enemy> enemy = new ArrayList<Enemy>();
     float shotX,shotY;
     TextView text;
@@ -36,6 +40,8 @@ public class TheGame extends View implements Runnable{
         hero= new ControlledHero(500,400);
         enemiesCount=1;
         enemy.add(new Enemy(900,200));
+        MyThread myThread = new MyThread();
+        myThread.start();
         thread.start();
 
     }
@@ -56,6 +62,18 @@ public class TheGame extends View implements Runnable{
                 b.onDraw(canvas);
             } else {
                 j.remove();
+            }
+        }
+        Iterator<Bullet> jE = ballEnemy.iterator();
+        while(jE.hasNext()) {
+            Bullet bE = jE.next();
+            // Toast.makeText(getContext(), j+"", Toast.LENGTH_LONG).show();
+            // Toast.makeText(getContext(), b.x+"", Toast.LENGTH_LONG).show();
+
+            if(bE.x <= 2500 && bE.x>=-100 && bE.y >=-100 && bE.y <=1300 ) { //Удаление пуль
+                bE.onDraw(canvas);
+            } else {
+                jE.remove();
             }
         }
         Iterator<Enemy> i = enemy.iterator();
@@ -86,7 +104,7 @@ public class TheGame extends View implements Runnable{
         Iterator<Enemy> i = enemy.iterator();
         while(i.hasNext()) {
             Enemy e = i.next();
-            e.setSpeed(shotX,shotY);
+            e.setSpeed(rnd.nextInt(200)+shotX-100,rnd.nextInt(200)+shotY-200);
 
 
         }
@@ -109,19 +127,54 @@ public class TheGame extends View implements Runnable{
     private Thread thread = new Thread(this);
     @Override
     public void run() {
-        while (enemiesCount>0){
-
+        try {
+            Thread.sleep(rnd.nextInt(10000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        while (true){
             try {
-                Thread.sleep(rnd.nextInt(2000));//rnd.nextInt(200)+1400,rnd.nextInt(200)+800
-                enemy.add(new Enemy(rnd.nextInt(200)+900,rnd.nextInt(200)+400));
+                Thread.sleep(rnd.nextInt(3000)+1000);
+                enemiesShoot();
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            enemiesCount--;
-
         }
 
+
     }
+    float enemyX,enemyY,heroX,heroY;
+    void enemiesShoot(){
+        Iterator<Enemy> i = enemy.iterator();
+        while(i.hasNext()) {
+            Enemy enemies = i.next();
+            enemyX=enemies.x;
+            enemyY=enemies.y;
+            heroX=hero.x;
+            heroY=hero.y;
+            ballEnemy.add(createSprite(R.drawable.bullet,enemyX,enemyY,heroX,heroY));
+            Log.d(TAG,"ENEMIES");
+        }
+    }
+
+
+    class MyThread extends Thread{
+        public void run(){
+            while (enemiesCount>0){
+
+                try {
+                    Thread.sleep(rnd.nextInt(2000));//rnd.nextInt(200)+1400,rnd.nextInt(200)+800
+                    enemy.add(new Enemy(rnd.nextInt(200)+900,rnd.nextInt(200)+400));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                enemiesCount--;
+
+            }
+        }
+    }
+
 
     private void testCollision() {
         Iterator<Bullet> b = ball.iterator();
