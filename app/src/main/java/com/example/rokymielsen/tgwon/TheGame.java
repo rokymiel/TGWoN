@@ -1,5 +1,6 @@
 package com.example.rokymielsen.tgwon;
 
+        import android.annotation.SuppressLint;
         import android.content.Context;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
@@ -37,7 +38,7 @@ public class TheGame extends View implements Runnable{
         super(context,attrs);
 
 
-        hero= new ControlledHero(500,400);
+        hero= new ControlledHero(500,400,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip));
         enemiesCount=1;
         //enemy.add(new Enemy(900,200));
         MyThread myThread = new MyThread();
@@ -49,9 +50,11 @@ public class TheGame extends View implements Runnable{
 
     @Override
     protected void onDraw(Canvas canvas) {
+        testCollision();
+        heatHero();
         hero.draw(canvas);
          hero.move();
-        testCollision();
+
        // text.setText(killCount);
         Iterator<Bullet> j = ball.iterator();
         while(j.hasNext()) {
@@ -185,9 +188,16 @@ public class TheGame extends View implements Runnable{
             Iterator<Enemy> i = enemy.iterator();
             while(i.hasNext()) {
                 Enemy enemies = i.next(); //((enemies.x-balls.x)*(enemies.x-balls.x)+(enemies.y-balls.y)*(enemies.y-balls.y)<=2490 )
-                if (Math.abs(balls.x - enemies.x) <=30 && Math.abs(balls.y - enemies.y) <30) {
+                if (Math.abs(balls.x - enemies.x) <=30 && Math.abs(balls.y - enemies.y) <=30) {
                     flag++;
-                    if (flag%3==1){ enemies.health-=damdge;Log.d(TAG,"ENEMIES"+ enemies.health);}
+                    if (flag%3==1){ enemies.health-=damdge;Log.d(TAG,"ENEMIES"+ enemies.health);
+                        try {
+
+                            b.remove();
+                        } catch (IllegalStateException e) {
+
+                        }
+                    }
                     //Log.d(TAG,"ENEMIES"+ flag);
                     if (enemies.health <=0) {
                         try {
@@ -201,6 +211,17 @@ public class TheGame extends View implements Runnable{
 
                    // text.setText(killCount);
                 }
+            }
+        }
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void heatHero(){
+        Iterator<Bullet> b = ballEnemy.iterator();
+        while(b.hasNext()) {
+            Bullet balls = b.next();
+            if(Math.abs(balls.x - hero.x) <=40 && Math.abs(balls.y - hero.y) <=40){
+                hero.paint.setColor(R.color.black);
             }
         }
     }

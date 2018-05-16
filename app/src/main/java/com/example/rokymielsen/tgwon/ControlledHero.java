@@ -1,5 +1,7 @@
 package com.example.rokymielsen.tgwon;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Roky Mielsen on 21.04.2018.
  */
@@ -7,8 +9,8 @@ package com.example.rokymielsen.tgwon;
 public class ControlledHero extends Hero {
 
     float toX,toY;
-    ControlledHero(float x, float y) {
-        super(x, y);
+    ControlledHero(float x, float y, Bitmap bitmap, Bitmap decodeResource) {
+        super(x, y,bitmap,decodeResource);
     }
 
 

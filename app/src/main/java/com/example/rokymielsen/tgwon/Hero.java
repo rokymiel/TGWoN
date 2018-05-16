@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 /**
  * Created by Roky Mielsen on 21.04.2018.
@@ -16,7 +17,8 @@ public class Hero {
     float vx=0,vy=0;
     Paint paint= new Paint();
     Bitmap sprites;
-    Hero( /*Bitmap sprites,*//*Canvas canvas*/float x, float y ){
+    Bitmap spritesLag;
+    Hero( /*Bitmap sprites,*//*Canvas canvas*/float x, float y,Bitmap spritesLag, Bitmap sprites ){
        // this.sprites= sprites;
         /*x=canvas.getWidth()/2;
         y=canvas.getHeight()/2;*/
@@ -24,7 +26,9 @@ public class Hero {
         this.y=y;
         centralX=x;
         centralY=y;
-        paint.setColor(Color.YELLOW);
+        this.sprites=sprites;
+        this.spritesLag=spritesLag;
+        //paint.setColor(Color.YELLOW);
     }
 
     void move(){
@@ -35,12 +39,35 @@ public class Hero {
        // }
 
     }
-
+    Bitmap bitmap;
+    int secFrame=0;
+    int xFrame=0,yFrame=0;
 
 
     void draw(Canvas canvas)
     {
-       canvas.drawCircle(x,y,r,paint);
+        Rect to = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
+        Rect frame = new Rect(xFrame*64, 0, xFrame*64+64, 64);
+        if (secFrame % 10 == 0) {
+            xFrame++;
+            xFrame %= 10;
+            /*if (xFrame % 8 == 0) {
+                yFrame++;
+                yFrame %= 4;
+            }*/
+        }
+        Rect toH = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
+        Rect frameH = new Rect(0, 0, 64, 64);
+
+
+        secFrame++;
+
+
+        canvas.drawBitmap(spritesLag, frame, to, paint);
+        canvas.drawBitmap(sprites, frameH, toH, paint);
+
+
+       //canvas.drawCircle(x,y,r,paint);
 
 
     }
