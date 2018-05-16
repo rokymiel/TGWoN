@@ -28,6 +28,10 @@ public class Hero {
         centralY=y;
         this.sprites=sprites;
         this.spritesLag=spritesLag;
+        xLag=(spritesLag.getWidth())/10;
+        yLag=spritesLag.getHeight();
+        xAlex=(sprites.getWidth())/3;
+        yAlex=sprites.getHeight();
         //paint.setColor(Color.YELLOW);
     }
 
@@ -41,13 +45,19 @@ public class Hero {
     }
     Bitmap bitmap;
     int secFrame=0;
-    int xFrame=0,yFrame=0;
-
+    int sec2Frame=0;
+    int xFrame=0,eFrame=0;
+    boolean shoot=false;
+    boolean endShoot=true;
+    int xLag;
+    int yLag;
+    int xAlex;
+    int yAlex;
 
     void draw(Canvas canvas)
     {
         Rect to = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
-        Rect frame = new Rect(xFrame*64, 0, xFrame*64+64, 64);
+        Rect frame = new Rect(xFrame*xLag, 0, xFrame*xLag+xLag, yLag);
         if (secFrame % 10 == 0) {
             xFrame++;
             xFrame %= 10;
@@ -57,8 +67,18 @@ public class Hero {
             }*/
         }
         Rect toH = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
-        Rect frameH = new Rect(0, 0, 64, 64);
-
+        Rect frameH = new Rect(eFrame*xAlex, 0, eFrame*xAlex+xAlex, yAlex);
+        if (sec2Frame%5==0) {
+            if (shoot) {
+                eFrame++;
+                if (eFrame == 3) {
+                    eFrame = 0;
+                    shoot = false;
+                    endShoot=true;
+                }
+            }
+        }
+        sec2Frame++;
 
         secFrame++;
 
@@ -71,6 +91,12 @@ public class Hero {
 
 
     }
+    void heroShoot(){
+        shoot=true;
+        endShoot=false;
+
+    }
+
 
 
 }

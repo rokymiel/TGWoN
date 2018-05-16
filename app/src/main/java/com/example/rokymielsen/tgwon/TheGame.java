@@ -44,6 +44,7 @@ public class TheGame extends View implements Runnable{
         MyThread myThread = new MyThread();
         myThread.start();
         thread.start();
+        //View view = fragment.getActiiviity().findViiewById(R.id.flID);
 
 
     }
@@ -123,9 +124,12 @@ public class TheGame extends View implements Runnable{
                 "Пора покормить кота!", Toast.LENGTH_SHORT);
         toast.show();*/
         //ball.add(createSprite(R.drawable.bullet));
-        bX=hero.x;
-        bY=hero.y;
-        ball.add(createSprite(R.drawable.bullet,bX,bY,shotX,shotY));
+        if (hero.endShoot) {
+            bX = hero.x;
+            bY = hero.y;
+            hero.heroShoot();
+            ball.add(createSprite(R.drawable.bullet, bX, bY, shotX, shotY));
+        }
     }
     Random rnd = new Random();
     private Thread thread = new Thread(this);
