@@ -54,7 +54,6 @@ public class FirstLevel extends Fragment {
 
          lp = (RelativeLayout.LayoutParams) layout.getLayoutParams();
 
-
        /* Button forward = (Button) view.findViewById(R.id.buttonV);
         forward.setOnClickListener(new View.OnClickListener() {
             @Override

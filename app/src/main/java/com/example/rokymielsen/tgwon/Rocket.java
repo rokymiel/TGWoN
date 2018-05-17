@@ -25,6 +25,10 @@ public class Rocket {
     String rotation;
     Bitmap pic;
 
+    public int width;
+
+    public  int heigh;
+
     Rocket(int x,int y,int ex,int ey,Bitmap pic){
 
         this.y=y;
@@ -34,6 +38,8 @@ public class Rocket {
         this.pic= pic;
         saveX=ex;
         saveY=ey;
+        heigh=(int)(pic.getHeight()*0.2f);
+        width=(int) (pic.getWidth()*0.2f);
         /*this.rotation=rocket.rotation;*/
         motion();
     }

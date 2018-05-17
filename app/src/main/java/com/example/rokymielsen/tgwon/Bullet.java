@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.widget.Toast;
 
 public class Bullet {
@@ -38,8 +39,8 @@ public class Bullet {
         this.y = bY;
         this.ex = endX;            //позиция по Х
         this.ey = endY; //позиция по У
-        this.width = 5;       //ширина снаряда
-        this.height = 40;      //высота снаряда
+        this.width = (int)(bmp.getWidth()*0.3f);       //ширина снаряда
+        this.height = (int)(bmp.getHeight()*0.3f);      //высота снаряда
 
         //угол полета пули в зависипости от координаты косания к экрану
         double otnosh =((double)(ey-y) / (ex-x));
@@ -54,6 +55,9 @@ public class Bullet {
         moveX_Y();
 
     }
+
+
+
 
     /**Перемещение объекта, его направление*/
     float vx,vy;

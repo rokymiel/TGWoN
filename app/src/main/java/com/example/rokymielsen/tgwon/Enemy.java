@@ -3,6 +3,7 @@ package com.example.rokymielsen.tgwon;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 public class Enemy {
     float x,y;
@@ -12,9 +13,15 @@ public class Enemy {
     boolean life=true;
     int health=100;
     Paint paint= new Paint();
+    public int height;
+    public int width;
+
     Enemy(float x, float y){
         this.x=x;
         this.y=y;
+        this.height= (int) ( 2*r);
+        this.width=this.health;
+
         paint.setColor(Color.RED);
 
     }
@@ -43,4 +50,6 @@ public class Enemy {
         canvas.drawCircle(x,y,r,paint);
 
     }
+
+
 }

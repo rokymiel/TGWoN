@@ -5,6 +5,7 @@ package com.example.rokymielsen.tgwon;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
         import android.graphics.Canvas;
+        import android.graphics.Rect;
         import android.util.AttributeSet;
         import android.util.Log;
         import android.view.MotionEvent;
@@ -53,7 +54,8 @@ public class TheGame extends View implements Runnable{
     protected void onDraw(Canvas canvas) {
         testCollision();
         heatHero();
-        hero.draw(canvas);
+
+         hero.draw(canvas);
          hero.move();
 
        // text.setText(killCount);
@@ -106,6 +108,7 @@ public class TheGame extends View implements Runnable{
         shotX =  event.getX();
         shotY = event.getY();
         this.hero.setTarget(shotX,shotY);
+        //hero.motion=true;
         Iterator<Enemy> i = enemy.iterator();
         while(i.hasNext()) {
             Enemy e = i.next();
@@ -185,24 +188,18 @@ public class TheGame extends View implements Runnable{
 
     int damdge=50;
     int flag=0;
+
+
     private void testCollision() {
         Iterator<Bullet> b = ball.iterator();
         while(b.hasNext()) {
             Bullet balls = b.next();
             Iterator<Enemy> i = enemy.iterator();
             while(i.hasNext()) {
-                Enemy enemies = i.next(); //((enemies.x-balls.x)*(enemies.x-balls.x)+(enemies.y-balls.y)*(enemies.y-balls.y)<=2490 )
-                if (Math.abs(balls.x - enemies.x) <=30 && Math.abs(balls.y - enemies.y) <=30) {
-                    flag++;
-                    if (flag%3==1){ enemies.health-=damdge;Log.d(TAG,"ENEMIES"+ enemies.health);
-                        try {
-
-                            b.remove();
-                        } catch (IllegalStateException e) {
-
-                        }
-                    }
-                    //Log.d(TAG,"ENEMIES"+ flag);
+                Enemy enemies = i.next(); //((enemies.x-balls.x)*(enemies.x-balls.x)+(enemies.y-balls.y)*(enemies.y-balls.y)<=2490 )Math.abs(balls.x - enemies.x) <=30 && Math.abs(balls.y - enemies.y) <=30
+                if (Math.abs(balls.x - enemies.x) <= (balls.width + enemies.width) / 4f
+                        && Math.abs(balls.y - enemies.y) <= (balls.height + enemies.height) / 4f) {
+                    enemies.health -= damdge;
                     if (enemies.health <=0) {
                         try {
                             i.remove();
@@ -212,6 +209,17 @@ public class TheGame extends View implements Runnable{
 
                         }
                     }
+                    else {
+
+                        Log.d(TAG, "ENEMIES" + enemies.health);
+                        try {
+                            b.remove();
+                        } catch (IllegalStateException e) {
+
+                        }
+                    }
+                   //Log.d(TAG,"ENEMIES");
+
 
                    // text.setText(killCount);
                 }
@@ -230,3 +238,27 @@ public class TheGame extends View implements Runnable{
         }
     }
 }
+
+
+
+
+
+/*flag++;
+                    if (flag%3==1){ enemies.health-=damdge;Log.d(TAG,"ENEMIES"+ enemies.health);
+                        try {
+
+                            b.remove();
+                        } catch (IllegalStateException e) {
+
+                        }
+                    }
+                    //Log.d(TAG,"ENEMIES"+ flag);
+                    if (enemies.health <=0) {
+                        try {
+                            i.remove();
+                            b.remove();
+                            killCount++;
+                        } catch (IllegalStateException e) {
+
+                        }
+                    }*/

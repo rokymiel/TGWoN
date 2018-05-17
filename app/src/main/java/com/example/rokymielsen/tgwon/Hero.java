@@ -2,7 +2,6 @@ package com.example.rokymielsen.tgwon;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -13,11 +12,14 @@ import android.graphics.Rect;
 public class Hero {
     float r =60;
     float x,y;
+    float oldX,oldY;
     float centralX, centralY;
     float vx=0,vy=0;
     Paint paint= new Paint();
     Bitmap sprites;
     Bitmap spritesLag;
+    int health=100;
+
     Hero( /*Bitmap sprites,*//*Canvas canvas*/float x, float y,Bitmap spritesLag, Bitmap sprites ){
        // this.sprites= sprites;
         /*x=canvas.getWidth()/2;
@@ -32,11 +34,14 @@ public class Hero {
         yLag=spritesLag.getHeight();
         xAlex=(sprites.getWidth())/3;
         yAlex=sprites.getHeight();
+        oldX=x;
+        oldY=y;
         //paint.setColor(Color.YELLOW);
     }
 
     void move(){
        // if ((vx+x>centralX-50 && vx+x<centralX+50)&&(vy+y>centralY-50&& vy+y<centralY+50)){
+
             x+=vx;
             y+=vy;
 
@@ -54,17 +59,21 @@ public class Hero {
     int xAlex;
     int yAlex;
 
+
+
     void draw(Canvas canvas)
     {
         Rect to = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
         Rect frame = new Rect(xFrame*xLag, 0, xFrame*xLag+xLag, yLag);
-        if (secFrame % 10 == 0) {
-            xFrame++;
-            xFrame %= 10;
+        if (secFrame % 8 == 0) {
+
+                xFrame++;
+                xFrame %= 10;
             /*if (xFrame % 8 == 0) {
                 yFrame++;
                 yFrame %= 4;
             }*/
+
         }
         Rect toH = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
         Rect frameH = new Rect(eFrame*xAlex, 0, eFrame*xAlex+xAlex, yAlex);

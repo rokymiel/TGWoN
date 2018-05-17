@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 public class ControlledHero extends Hero {
 
     float toX,toY;
+
     ControlledHero(float x, float y, Bitmap bitmap, Bitmap decodeResource) {
         super(x, y,bitmap,decodeResource);
     }
@@ -25,11 +26,14 @@ public class ControlledHero extends Hero {
     }
 
     void move(){
+
          if((toX-x)*(toX-x)+(toY-y)*(toY-y)<300){
               /*vx=0;
                 vy=0;*/
+
                return ;
              }
+
              super.move();
     }
 }
