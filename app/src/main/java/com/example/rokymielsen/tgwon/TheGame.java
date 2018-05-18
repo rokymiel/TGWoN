@@ -40,7 +40,7 @@ public class TheGame extends View implements Runnable{
 
 
         hero= new ControlledHero(500,400,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip));
-        enemiesCount=1;
+        enemiesCount=3;
         //enemy.add(new Enemy(900,200));
         MyThread myThread = new MyThread();
         myThread.start();
@@ -144,6 +144,7 @@ public class TheGame extends View implements Runnable{
             e.printStackTrace();
         }
         while (true){
+            //enemiesShootFalse();
             try {
                 Thread.sleep(rnd.nextInt(3000)+1000);
                 enemiesShoot();
@@ -155,6 +156,15 @@ public class TheGame extends View implements Runnable{
 
 
     }
+    void enemiesShootFalse(){
+
+        Iterator<Enemy> i = enemy.iterator();
+        while(i.hasNext()) {
+            Enemy enemies = i.next();
+            enemies.shoot=false;
+            //Log.d(TAG,"ENEMIES");
+        }
+    }
     float enemyX,enemyY,heroX,heroY;
     void enemiesShoot(){
         Iterator<Enemy> i = enemy.iterator();
@@ -165,6 +175,7 @@ public class TheGame extends View implements Runnable{
             heroX=hero.x;
             heroY=hero.y;
             ballEnemy.add(createSprite(R.drawable.bullet,enemyX,enemyY,heroX,heroY));
+            enemies.shoot=true;
             //Log.d(TAG,"ENEMIES");
         }
     }
@@ -176,7 +187,7 @@ public class TheGame extends View implements Runnable{
 
                 try {
                     Thread.sleep(rnd.nextInt(2000));//rnd.nextInt(200)+1400,rnd.nextInt(200)+800
-                    enemy.add(new Enemy(rnd.nextInt(200)+900,rnd.nextInt(200)+400));
+                    enemy.add(new Enemy(rnd.nextInt(200)+900,rnd.nextInt(200)+400,BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3),BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3)));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

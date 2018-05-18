@@ -1,5 +1,6 @@
 package com.example.rokymielsen.tgwon;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,12 +16,32 @@ public class Enemy {
     Paint paint= new Paint();
     public int height;
     public int width;
+    Bitmap sprites;
+    Bitmap spritesLag;
 
-    Enemy(float x, float y){
+    int secFrame=0;
+    int sec2Frame=0;
+    int xFrame=0,eFrame=0;
+    boolean shoot=false;
+    boolean endShoot=true;
+    int xLag;
+    int yLag;
+    int xEnemy;
+    int yEnemy;
+
+
+    Enemy(float x, float y,Bitmap spritesLag, Bitmap sprites){
         this.x=x;
         this.y=y;
         this.height= (int) ( 2*r);
         this.width=this.health;
+        this.sprites=sprites;
+        this.spritesLag=spritesLag;
+        xLag=(spritesLag.getWidth())/10;
+        yLag=spritesLag.getHeight();
+        xEnemy=(sprites.getWidth())/3;
+        yEnemy=sprites.getHeight();
+
 
         paint.setColor(Color.RED);
 
@@ -47,7 +68,40 @@ public class Enemy {
         y+=vy;
     }
     void draw(Canvas canvas){
-        canvas.drawCircle(x,y,r,paint);
+        Rect to = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
+        Rect frame = new Rect(xFrame*xLag, 0, xFrame*xLag+xLag, yLag);
+        if (secFrame % 8 == 0) {
+
+            xFrame++;
+            xFrame %= 10;
+            /*if (xFrame % 8 == 0) {
+                yFrame++;
+                yFrame %= 4;
+            }*/
+
+        }
+        Rect toH = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
+        Rect frameH = new Rect(eFrame*xEnemy, 0, eFrame*xEnemy+xEnemy, yEnemy);
+        if (sec2Frame%5==0) {
+            if (shoot) {
+                eFrame++;
+                if (eFrame == 3) {
+                    eFrame = 0;
+                    shoot = false;
+                    endShoot=true;
+                }
+            }
+        }
+        sec2Frame++;
+
+        secFrame++;
+
+
+        canvas.drawBitmap(spritesLag, frame, to, paint);
+        canvas.drawBitmap(sprites, frameH, toH, paint);
+
+
+        //canvas.drawCircle(x,y,r,paint);
 
     }
 
