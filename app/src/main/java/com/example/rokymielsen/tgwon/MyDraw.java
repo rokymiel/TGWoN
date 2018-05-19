@@ -27,13 +27,12 @@ public class MyDraw extends View{
 
     public MyDraw(Context context, AttributeSet attrs) {
         super(context,attrs);
-        sky =new Sky();
-        sky.makeSky();
         scaleWidth=displaymetrics.widthPixels;
         scaleHeight=displaymetrics.heightPixels;
         xStatic =scaleWidth/100;
         yStatic=scaleHeight/100;
-
+        sky =new Sky();
+        sky.makeSky(scaleWidth,scaleHeight);
         Log.d(TAG,displaymetrics.widthPixels+"><><");
         Log.d(TAG,displaymetrics.heightPixels+"><><");
         int x=-(50*xStatic);

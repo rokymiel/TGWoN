@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Roky Mielsen on 21.04.2018.
@@ -19,11 +22,14 @@ public class Hero {
     Bitmap sprites;
     Bitmap spritesLag;
     int health=100;
+    int xStatic,yStatic;
 
-    Hero( /*Bitmap sprites,*//*Canvas canvas*/float x, float y,Bitmap spritesLag, Bitmap sprites ){
+    Hero( /*Bitmap sprites,*//*Canvas canvas*/float x, float y,Bitmap spritesLag, Bitmap sprites,int xStatic,int yStatic ){
        // this.sprites= sprites;
         /*x=canvas.getWidth()/2;
         y=canvas.getHeight()/2;*/
+        this.xStatic=xStatic;
+        this.yStatic=yStatic;
         this.x=x;
         this.y=y;
         centralX=x;
@@ -36,6 +42,7 @@ public class Hero {
         yAlex=sprites.getHeight();
         oldX=x;
         oldY=y;
+        Log.d(TAG,xStatic+"---------------------------------------------");
         //paint.setColor(Color.YELLOW);
     }
 
@@ -76,7 +83,7 @@ public class Hero {
     }
     void draw(Canvas canvas)
     {
-        Rect to = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
+        Rect to = new Rect((int) x - (6400/1184)*xStatic, (int) y - (6400/768)*yStatic, (int) x + (6400/1184)*xStatic, (int) y +(6400/768)*yStatic);
         Rect frame = new Rect(xFrame*xLag, 0, xFrame*xLag+xLag, yLag);
         if (secFrame % 8 == 0) {
 
@@ -90,7 +97,7 @@ public class Hero {
         }
 
 
-        Rect toH = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
+        Rect toH = new Rect((int) x - (6400/1184)*xStatic, (int) y - (6400/768)*yStatic, (int) x + (6400/1184)*xStatic, (int) y +(6400/768)*yStatic );
         Rect frameH = new Rect(eFrame*xAlex, 0, eFrame*xAlex+xAlex, yAlex);
         if (sec2Frame%5==0) {
             if (shoot) {

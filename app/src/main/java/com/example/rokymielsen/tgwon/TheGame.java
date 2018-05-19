@@ -7,6 +7,7 @@ package com.example.rokymielsen.tgwon;
         import android.graphics.Canvas;
         import android.graphics.Rect;
         import android.util.AttributeSet;
+        import android.util.DisplayMetrics;
         import android.util.Log;
         import android.view.MotionEvent;
         import android.view.View;
@@ -26,6 +27,11 @@ package com.example.rokymielsen.tgwon;
  */
 
 public class TheGame extends View implements Runnable{
+    DisplayMetrics displaymetrics = getResources().getDisplayMetrics();
+    static int scaleWidth;
+    static int scaleHeight;
+    static int xStatic;
+    static int yStatic;
     ControlledHero hero;
     int enemiesCount;
     int killCount=0;
@@ -38,9 +44,12 @@ public class TheGame extends View implements Runnable{
 
     public TheGame(Context context, AttributeSet attrs/*,Canvas canvas*/) {
         super(context,attrs);
+        scaleWidth=displaymetrics.widthPixels;
+        scaleHeight=displaymetrics.heightPixels;
+        xStatic =scaleWidth/100;
+        yStatic=scaleHeight/100;
 
-
-        hero= new ControlledHero(500,400,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip));
+        hero= new ControlledHero(42*xStatic,50*yStatic,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip),xStatic,yStatic);
         enemiesCount=1;
         //enemy.add(new Enemy(900,200));
         MyThread myThread = new MyThread();
@@ -66,7 +75,7 @@ public class TheGame extends View implements Runnable{
            // Toast.makeText(getContext(), j+"", Toast.LENGTH_LONG).show();
            // Toast.makeText(getContext(), b.x+"", Toast.LENGTH_LONG).show();
 
-            if(b.x <= 2500 && b.x>=-100 && b.y >=-100 && b.y <=1300 ) { //Удаление пуль
+            if(b.x <= scaleWidth*2 && b.x>=-8*xStatic && b.y >=-13*yStatic && b.y <=2*scaleHeight ) { //Удаление пуль
                 b.onDraw(canvas);
             } else {
                 j.remove();
@@ -78,7 +87,7 @@ public class TheGame extends View implements Runnable{
             // Toast.makeText(getContext(), j+"", Toast.LENGTH_LONG).show();
             // Toast.makeText(getContext(), b.x+"", Toast.LENGTH_LONG).show();
 
-            if(bE.x <= 2500 && bE.x>=-100 && bE.y >=-100 && bE.y <=1300 ) { //Удаление пуль
+            if(bE.x <= scaleWidth*2 && bE.x>=-8*xStatic && bE.y >=-13*yStatic && bE.y <=2*scaleHeight ) { //Удаление пуль
                 bE.onDraw(canvas);
             } else {
                 jE.remove();
@@ -88,7 +97,7 @@ public class TheGame extends View implements Runnable{
         Iterator<Enemy> i = enemy.iterator();
         while(i.hasNext()) {
             Enemy enemies = i.next();
-                if (enemyFrame%20==0) {
+                if (enemyFrame%10==0) {
                     enemies.setAngle(hero.x,hero.y);
                 }
 
@@ -189,19 +198,20 @@ public class TheGame extends View implements Runnable{
     }
 
 
-    class MyThread extends Thread{
-        public void run(){
-            while (enemiesCount>0){
+    class MyThread extends Thread {
+        public void run() {
+            while (enemiesCount > 0) {
 
                 try {
                     Thread.sleep(rnd.nextInt(2000));//rnd.nextInt(200)+1400,rnd.nextInt(200)+800
-                    enemy.add(new Enemy(rnd.nextInt(200)+900,rnd.nextInt(200)+400,BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3),BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3)));
+                    enemy.add(new Enemy(rnd.nextInt(200) + 900, rnd.nextInt(200) + 400, BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3), BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3), xStatic, yStatic));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 enemiesCount--;
 
             }
+
         }
     }
 
@@ -260,7 +270,7 @@ public class TheGame extends View implements Runnable{
         Iterator<Bullet> b = ballEnemy.iterator();
         while(b.hasNext()) {
             Bullet balls = b.next();
-            if(Math.abs(balls.x - hero.x) <=40 && Math.abs(balls.y - hero.y) <=40){
+            if(Math.abs(balls.x - hero.x) <=3*xStatic && Math.abs(balls.y - hero.y) <=5*yStatic){
                 try {
                     b.remove();
                     progressBar.setProgress(progressBar.getProgress()-enemiesDamage);

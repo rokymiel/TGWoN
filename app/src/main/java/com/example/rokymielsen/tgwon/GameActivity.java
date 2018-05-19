@@ -39,7 +39,7 @@ public class GameActivity extends FragmentActivity {
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
         fragmentTransaction.add(R.id.game,firstLevel).commit();
-        startService(new Intent(this, MyService.class));
+
 
 
         frameLayout=(FrameLayout) findViewById(R.id.frameLay);
@@ -86,6 +86,7 @@ public class GameActivity extends FragmentActivity {
         SharedPreferences preferences= getSharedPreferences("buttonLayout",MODE_PRIVATE);
         side =preferences.getString("buttonSide","LEFT");
         firstLevel.resume(side);
+        startService(new Intent(this, MyService.class));
 
 
 
@@ -126,7 +127,10 @@ public class GameActivity extends FragmentActivity {
         this.finish();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopService(new Intent(this, MyService.class));
 
-
-
+    }
 }

@@ -29,9 +29,10 @@ public class Enemy {
     int xEnemy;
     int yEnemy;
     double angle=0;
+    int xStatic,yStatic;
 
 
-    Enemy(float x, float y,Bitmap spritesLag, Bitmap sprites){
+    Enemy(float x, float y,Bitmap spritesLag, Bitmap sprites,int xStatic,int yStatic){
         this.x=x;
         this.y=y;
         this.height= (int) ( 2*r);
@@ -42,7 +43,8 @@ public class Enemy {
         yLag=spritesLag.getHeight();
         xEnemy=(sprites.getWidth())/3;
         yEnemy=sprites.getHeight();
-
+        this.xStatic=xStatic;
+        this.yStatic=yStatic;
 
         paint.setColor(Color.RED);
 
@@ -83,7 +85,7 @@ public class Enemy {
         y+=vy;
     }
     void draw(Canvas canvas){
-        Rect to = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
+        Rect to = new Rect((int) x - (6400/1184)*xStatic, (int) y - (6400/768)*yStatic, (int) x + (6400/1184)*xStatic, (int) y +(6400/768)*yStatic );
         Rect frame = new Rect(xFrame*xLag, 0, xFrame*xLag+xLag, yLag);
         if (secFrame % 8 == 0) {
 
@@ -95,7 +97,7 @@ public class Enemy {
             }*/
 
         }
-        Rect toH = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
+        Rect toH = new Rect((int) x - (6400/1184)*xStatic, (int) y - (6400/768)*yStatic, (int) x + (6400/1184)*xStatic, (int) y +(6400/768)*yStatic  );
         Rect frameH = new Rect(eFrame*xEnemy, 0, eFrame*xEnemy+xEnemy, yEnemy);
         if (sec2Frame%5==0) {
             if (shoot) {

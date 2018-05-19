@@ -22,7 +22,8 @@ public class MyService extends Service {
         //Toast.makeText(this, "My Service Created", Toast.LENGTH_LONG).show();
 
         player = MediaPlayer.create(this, R.raw.music);
-        player.setLooping(true); // зацикливаем
+        player.setLooping(true);
+        // зацикливаем
     }
 
     @Override
@@ -35,6 +36,10 @@ public class MyService extends Service {
     public void onStart(Intent intent, int startid) {
        // Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
         player.start();
+    }
+
+    public void pause(){
+        player.pause();
     }
 
 }
