@@ -28,6 +28,7 @@ public class Enemy {
     int yLag;
     int xEnemy;
     int yEnemy;
+    double angle=0;
 
 
     Enemy(float x, float y,Bitmap spritesLag, Bitmap sprites){
@@ -45,6 +46,20 @@ public class Enemy {
 
         paint.setColor(Color.RED);
 
+    }
+    float endHY, endHX;
+    void setAngle(float endHX,float endHY){
+        this.endHY=endHY;
+        this.endHX=endHX;
+
+
+        angle= Math.toDegrees(Math.atan((double)(endHY-y) / (endHX-x)));
+        if((endHX<x) && (endHY<y)){
+            angle+=180;
+        }
+        if ((endHX<x)&&(endHY>y)){
+            angle+=180;
+        }
     }
 
     void setSpeed(float endX, float endY){
@@ -96,10 +111,14 @@ public class Enemy {
 
         secFrame++;
 
-
+        canvas.save();
+        canvas.rotate((float)angle+0+90,x,y);
         canvas.drawBitmap(spritesLag, frame, to, paint);
+        canvas.restore();
+        canvas.save();
+        canvas.rotate((float)angle+0+90,x,y);
         canvas.drawBitmap(sprites, frameH, toH, paint);
-
+        canvas.restore();
 
         //canvas.drawCircle(x,y,r,paint);
 

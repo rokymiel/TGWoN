@@ -58,9 +58,22 @@ public class Hero {
     int yLag;
     int xAlex;
     int yAlex;
+    double angle=0;
+    float eX,eY;
 
 
+    void  setEnd(float toX, float toY){
+        this.eX=toX;
+        this.eY=toY;
+        angle= Math.toDegrees(Math.atan((double)(eY-y) / (eX-x)));
+        if((eX<x) && (eY<y)){
+            angle+=180;
+        }
+        if ((eX<x)&&(eY>y)){
+            angle+=180;
+        }
 
+    }
     void draw(Canvas canvas)
     {
         Rect to = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
@@ -75,6 +88,8 @@ public class Hero {
             }*/
 
         }
+
+
         Rect toH = new Rect((int) x - 64, (int) y - 64, (int) x + 64, (int) y +64 );
         Rect frameH = new Rect(eFrame*xAlex, 0, eFrame*xAlex+xAlex, yAlex);
         if (sec2Frame%5==0) {
@@ -91,10 +106,15 @@ public class Hero {
 
         secFrame++;
 
-
+        canvas.save();
+        canvas.rotate((float)angle+0+90,x,y);
         canvas.drawBitmap(spritesLag, frame, to, paint);
-        canvas.drawBitmap(sprites, frameH, toH, paint);
+        canvas.restore();
 
+        canvas.save();
+        canvas.rotate((float)angle+0+90,x,y);
+        canvas.drawBitmap(sprites, frameH, toH, paint);
+        canvas.restore();
 
        //canvas.drawCircle(x,y,r,paint);
 

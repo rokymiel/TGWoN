@@ -10,6 +10,7 @@ package com.example.rokymielsen.tgwon;
         import android.util.Log;
         import android.view.MotionEvent;
         import android.view.View;
+        import android.widget.ProgressBar;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -40,7 +41,7 @@ public class TheGame extends View implements Runnable{
 
 
         hero= new ControlledHero(500,400,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip));
-        enemiesCount=3;
+        enemiesCount=1;
         //enemy.add(new Enemy(900,200));
         MyThread myThread = new MyThread();
         myThread.start();
@@ -83,15 +84,18 @@ public class TheGame extends View implements Runnable{
                 jE.remove();
             }
         }
+        int enemyFrame=0;
         Iterator<Enemy> i = enemy.iterator();
         while(i.hasNext()) {
-            Enemy e = i.next();
-            if(e.x >= 1000 || e.x <= 1000) {
-                e.move();
-                e.draw(canvas);
-            } else {
-                i.remove();
-            }
+            Enemy enemies = i.next();
+                if (enemyFrame%20==0) {
+                    enemies.setAngle(hero.x,hero.y);
+                }
+
+                enemies.move();
+
+                enemies.draw(canvas);
+
         }
 
         invalidate();
@@ -108,11 +112,13 @@ public class TheGame extends View implements Runnable{
         shotX =  event.getX();
         shotY = event.getY();
         this.hero.setTarget(shotX,shotY);
+        this.hero.setEnd(shotX,shotY);
         //hero.motion=true;
         Iterator<Enemy> i = enemy.iterator();
         while(i.hasNext()) {
-            Enemy e = i.next();
-            e.setSpeed(rnd.nextInt(200)+shotX-100,rnd.nextInt(200)+shotY-200);
+            Enemy enemies= i.next();
+            enemies.setSpeed(rnd.nextInt(200)+shotX-100,rnd.nextInt(200)+shotY-200);
+
 
 
         }
@@ -175,6 +181,8 @@ public class TheGame extends View implements Runnable{
             heroX=hero.x;
             heroY=hero.y;
             ballEnemy.add(createSprite(R.drawable.bullet,enemyX,enemyY,heroX,heroY));
+
+
             enemies.shoot=true;
             //Log.d(TAG,"ENEMIES");
         }
@@ -198,10 +206,12 @@ public class TheGame extends View implements Runnable{
     }
 
     int damdge=50;
-    int flag=0;
+    int enemiesDamage=20;
 
 
+    TextView tx;
     private void testCollision() {
+        tx = (TextView)((GameActivity)this.getContext()).findViewById(R.id.killCount);
         Iterator<Bullet> b = ball.iterator();
         while(b.hasNext()) {
             Bullet balls = b.next();
@@ -216,6 +226,8 @@ public class TheGame extends View implements Runnable{
                             i.remove();
                             b.remove();
                             killCount++;
+
+                            tx.setText(killCount+"");
                         } catch (IllegalStateException e) {
 
                         }
@@ -238,13 +250,29 @@ public class TheGame extends View implements Runnable{
         }
     }
 
+    ProgressBar progressBar;
+    int same=0;
+
     @SuppressLint("ResourceAsColor")
     private void heatHero(){
+        progressBar = (ProgressBar) ((GameActivity)this.getContext()).findViewById(R.id.heroHealth);
+
         Iterator<Bullet> b = ballEnemy.iterator();
         while(b.hasNext()) {
             Bullet balls = b.next();
             if(Math.abs(balls.x - hero.x) <=40 && Math.abs(balls.y - hero.y) <=40){
-                hero.paint.setColor(R.color.black);
+                try {
+                    b.remove();
+                    progressBar.setProgress(progressBar.getProgress()-enemiesDamage);
+                } catch (IllegalStateException e) {
+
+                }
+                same++;
+                Log.d(TAG,progressBar.getProgress()+" "+same);
+
+                if (progressBar.getProgress()<=0) {
+                    hero.paint.setColor(R.color.black);
+                }
             }
         }
     }

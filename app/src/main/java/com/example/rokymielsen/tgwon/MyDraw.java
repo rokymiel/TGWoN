@@ -31,12 +31,16 @@ public class MyDraw extends View{
         sky.makeSky();
         scaleWidth=displaymetrics.widthPixels;
         scaleHeight=displaymetrics.heightPixels;
-        xStatic =scaleWidth/1184;
-        yStatic=scaleHeight/768;
+        xStatic =scaleWidth/100;
+        yStatic=scaleHeight/100;
 
         Log.d(TAG,displaymetrics.widthPixels+"><><");
         Log.d(TAG,displaymetrics.heightPixels+"><><");
-        rocket= new Rocket(-50,-20,1000,300, BitmapFactory.decodeResource(getResources(), R.drawable.rocket));
+        int x=-(50*xStatic);
+        int y=-(20*yStatic);
+        int ex=(87*xStatic);
+        int ey=(50*yStatic);
+        rocket= new Rocket(x,y,ex,ey, BitmapFactory.decodeResource(getResources(), R.drawable.rocket));
         fire = new Fire(rocket.ex-(int)(rocket.width/(1.4)),rocket.ey,BitmapFactory.decodeResource(getResources(), R.drawable.fire));
 
 
