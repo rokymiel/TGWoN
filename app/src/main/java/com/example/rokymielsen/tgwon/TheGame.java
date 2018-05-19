@@ -50,7 +50,7 @@ public class TheGame extends View implements Runnable{
         yStatic=scaleHeight/100;
 
         hero= new ControlledHero(42*xStatic,50*yStatic,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip),xStatic,yStatic);
-        enemiesCount=1;
+        enemiesCount=3;
         //enemy.add(new Enemy(900,200));
         MyThread myThread = new MyThread();
         myThread.start();

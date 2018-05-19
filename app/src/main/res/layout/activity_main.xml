@@ -51,6 +51,16 @@
             android:onClick="settings"
             />
 
+        <Button
+            android:id="@+id/statusBut"
+            android:layout_width="233dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="7dp"
+            android:text="Статика"
+            android:onClick="status"
+            />
+
 
     </LinearLayout>
 

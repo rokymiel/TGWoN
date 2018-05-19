@@ -17,5 +17,8 @@
     <style name="MyRadioButton" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">#04328f</item>
     </style>
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="android:editTextColor">#04328f</item>
+    </style>
 
 </resources>

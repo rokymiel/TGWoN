@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 MyDraw myDraw;
     Intent intent;
     Intent intent2;
+    Intent intent3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +27,10 @@ MyDraw myDraw;
     public  void  settings(View view){
         intent2= new Intent(this,SettingsAppActivity.class);
         startActivity(intent2);
+    }
+    public void status(View view){
+        intent3= new Intent(this,SignActivity.class);
+        startActivity(intent3);
     }
 
 

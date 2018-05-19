@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/eTeMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="98dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        tools:layout_editor_absoluteX="189dp"
+        tools:layout_editor_absoluteY="154dp"
+        android:hint="Введите email"
+        android:theme="@style/MyEditText"
+        />
+
+    <EditText
+        android:id="@+id/eTpassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/signIn"
+        android:layout_centerHorizontal="true"
+        android:ems="10"
+        android:inputType="textPassword"
+        tools:layout_editor_absoluteX="189dp"
+        tools:layout_editor_absoluteY="100dp"
+        android:hint="Введите пароль"
+        android:theme="@style/MyEditText"
+        />
+
+    <Button
+        android:id="@+id/signIn"
+        android:layout_width="215dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="132dp"
+        android:text="Войти"
+        tools:layout_editor_absoluteX="189dp"
+        tools:layout_editor_absoluteY="200dp" />
+
+    <Button
+        android:id="@+id/registr"
+        android:layout_width="146dp"
+        android:layout_height="36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:text="Регистрация"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="223dp" />
+</RelativeLayout>
