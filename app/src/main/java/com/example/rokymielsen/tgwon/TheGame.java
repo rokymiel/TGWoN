@@ -2,6 +2,7 @@ package com.example.rokymielsen.tgwon;
 
         import android.annotation.SuppressLint;
         import android.content.Context;
+        import android.content.SharedPreferences;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
         import android.graphics.Canvas;
@@ -21,6 +22,7 @@ package com.example.rokymielsen.tgwon;
         import java.util.Random;
 
         import static android.content.ContentValues.TAG;
+        import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Roky Mielsen on 21.04.2018.
@@ -236,7 +238,7 @@ public class TheGame extends View implements Runnable{
                             i.remove();
                             b.remove();
                             killCount++;
-
+                            ((GameActivity)this.getContext()).maxScore(killCount);
                             tx.setText(killCount+"");
                         } catch (IllegalStateException e) {
 
@@ -247,6 +249,7 @@ public class TheGame extends View implements Runnable{
                         Log.d(TAG, "ENEMIES" + enemies.health);
                         try {
                             b.remove();
+
                         } catch (IllegalStateException e) {
 
                         }
@@ -282,6 +285,7 @@ public class TheGame extends View implements Runnable{
 
                 if (progressBar.getProgress()<=0) {
                     hero.paint.setColor(R.color.black);
+                    ((GameActivity)this.getContext()).maxScore(killCount);
                 }
             }
         }

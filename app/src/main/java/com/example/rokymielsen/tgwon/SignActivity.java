@@ -1,5 +1,6 @@
 package com.example.rokymielsen.tgwon;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,7 +40,8 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
+                    Intent intent = new Intent(SignActivity.this,ScoreActivity.class);
+                    startActivity(intent);
 
                 } else {
                     // User is signed out
@@ -53,6 +55,15 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.signIn).setOnClickListener(this);
         findViewById(R.id.registr).setOnClickListener(this);
+        FirebaseUser user = mAuth.getCurrentUser();
+        /*if (user != null) {
+            Intent intent = new Intent(SignActivity.this,ScoreActivity.class);
+            startActivity(intent);
+
+        } else {
+            // User is signed out
+
+        }*/
     }
 
     @Override
@@ -76,6 +87,8 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
                     Toast.makeText(SignActivity.this, "Aвторизация успешна", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignActivity.this,ScoreActivity.class);
+                    startActivity(intent);
                 }else
                     Toast.makeText(SignActivity.this, "Aвторизация провалена", Toast.LENGTH_SHORT).show();
 
@@ -89,6 +102,8 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
                 if(task.isSuccessful())
                 {
                     Toast.makeText(SignActivity.this, "Регистрация успешна", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignActivity.this,RegistrActivity.class);
+                    startActivity(intent);
                 }
                 else
                     Toast.makeText(SignActivity.this, "Регистрация провалена", Toast.LENGTH_SHORT).show();

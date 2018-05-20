@@ -133,4 +133,17 @@ public class GameActivity extends FragmentActivity {
         stopService(new Intent(this, MyService.class));
 
     }
+
+    void maxScore(int killCount){
+        Toast.makeText(this, killCount+"", Toast.LENGTH_SHORT).show();
+        SharedPreferences preferences= getSharedPreferences("maxScore",MODE_PRIVATE);
+        int maxScore=Integer.parseInt(preferences.getString("maxScore","0"));
+        Toast.makeText(this, maxScore+"", Toast.LENGTH_SHORT).show();
+        if (maxScore<killCount) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("maxScore", killCount + "");
+            editor.apply();
+        }
+
+    }
 }
