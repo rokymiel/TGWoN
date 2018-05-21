@@ -12,11 +12,14 @@ package com.example.rokymielsen.tgwon;
         import android.util.Log;
         import android.view.MotionEvent;
         import android.view.View;
+        import android.widget.ImageView;
+        import android.widget.LinearLayout;
         import android.widget.ProgressBar;
         import android.widget.TextView;
         import android.widget.Toast;
 
         import java.util.ArrayList;
+        import java.util.ConcurrentModificationException;
         import java.util.Iterator;
         import java.util.List;
         import java.util.Random;
@@ -42,6 +45,8 @@ public class TheGame extends View implements Runnable{
     private List<Enemy> enemy = new ArrayList<Enemy>();
     float shotX,shotY;
     TextView text;
+    boolean gaming=true;
+
 
 
     public TheGame(Context context, AttributeSet attrs/*,Canvas canvas*/) {
@@ -52,11 +57,13 @@ public class TheGame extends View implements Runnable{
         yStatic=scaleHeight/100;
 
         hero= new ControlledHero(42*xStatic,50*yStatic,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip),xStatic,yStatic);
-        enemiesCount=3;
+        enemiesCount=100;
         //enemy.add(new Enemy(900,200));
+
         MyThread myThread = new MyThread();
         myThread.start();
         thread.start();
+       bmp = BitmapFactory.decodeResource(getResources(),R.drawable.bullet);
         //View view = fragment.getActiiviity().findViiewById(R.id.flID);
 
 
@@ -98,7 +105,8 @@ public class TheGame extends View implements Runnable{
         int enemyFrame=0;
         Iterator<Enemy> i = enemy.iterator();
         while(i.hasNext()) {
-            Enemy enemies = i.next();
+            try {
+                Enemy enemies = i.next();
                 if (enemyFrame%10==0) {
                     enemies.setAngle(hero.x,hero.y);
                 }
@@ -106,32 +114,38 @@ public class TheGame extends View implements Runnable{
                 enemies.move();
 
                 enemies.draw(canvas);
+                }
+                catch (ConcurrentModificationException e){
+
+                }
 
         }
 
         invalidate();
 
     }
-    public Bullet createSprite(int resouce,float bX,float bY,float shotX,float shotY) {
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), resouce);
+    Bitmap bmp ;
+    public Bullet createSprite(float bX,float bY,float shotX,float shotY) {
+        //Bitmap bmp = BitmapFactory.decodeResource(getResources(), resouce);
         return new Bullet(this, bmp,bX,bY,shotX,shotY);
     }
     float bX,bY;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        shotX =  event.getX();
-        shotY = event.getY();
-        this.hero.setTarget(shotX,shotY);
-        this.hero.setEnd(shotX,shotY);
-        //hero.motion=true;
-        Iterator<Enemy> i = enemy.iterator();
-        while(i.hasNext()) {
-            Enemy enemies= i.next();
-            enemies.setSpeed(rnd.nextInt(200)+shotX-100,rnd.nextInt(200)+shotY-200);
+        if (gaming) {
+            shotX = event.getX();
+            shotY = event.getY();
+            this.hero.setTarget(shotX, shotY);
+            this.hero.setEnd(shotX, shotY);
+            //hero.motion=true;
+            Iterator<Enemy> i = enemy.iterator();
+            while (i.hasNext()) {
+                Enemy enemies = i.next();
+                enemies.setSpeed(rnd.nextInt(200) + shotX - 100, rnd.nextInt(200) + shotY - 200);
 
 
-
+            }
         }
 
 
@@ -144,11 +158,13 @@ public class TheGame extends View implements Runnable{
                 "Пора покормить кота!", Toast.LENGTH_SHORT);
         toast.show();*/
         //ball.add(createSprite(R.drawable.bullet));
-        if (hero.endShoot) {
-            bX = hero.x;
-            bY = hero.y;
-            hero.heroShoot();
-            ball.add(createSprite(R.drawable.bullet, bX, bY, shotX, shotY));
+        if(gaming) {
+            if (hero.endShoot) {
+                bX = hero.x;
+                bY = hero.y;
+                hero.heroShoot();
+                ball.add(createSprite(bX, bY, shotX, shotY));
+            }
         }
     }
     Random rnd = new Random();
@@ -184,29 +200,44 @@ public class TheGame extends View implements Runnable{
     }
     float enemyX,enemyY,heroX,heroY;
     void enemiesShoot(){
-        Iterator<Enemy> i = enemy.iterator();
-        while(i.hasNext()) {
-            Enemy enemies = i.next();
-            enemyX=enemies.x;
-            enemyY=enemies.y;
-            heroX=hero.x;
-            heroY=hero.y;
-            ballEnemy.add(createSprite(R.drawable.bullet,enemyX,enemyY,heroX,heroY));
+        if(gaming) {
+            Iterator<Enemy> i = enemy.iterator();
+            while (i.hasNext()) {
+                try {
+                    Enemy enemies = i.next();
+                    enemyX = enemies.x;
+                    enemyY = enemies.y;
+                    heroX = hero.x;
+                    heroY = hero.y;
+                    ballEnemy.add(createSprite(enemyX, enemyY, heroX, heroY));
 
 
-            enemies.shoot=true;
-            //Log.d(TAG,"ENEMIES");
+                    enemies.shoot = true;
+                    //Log.d(TAG,"ENEMIES");
+                } catch (ConcurrentModificationException e) {
+
+                }
+
+            }
         }
     }
 
-
+    int enemyFix=10;
+    int enemyDid=1;
     class MyThread extends Thread {
         public void run() {
             while (enemiesCount > 0) {
 
                 try {
-                    Thread.sleep(rnd.nextInt(2000));//rnd.nextInt(200)+1400,rnd.nextInt(200)+800
-                    enemy.add(new Enemy(rnd.nextInt(200) + 900, rnd.nextInt(200) + 400, BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3), BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3), xStatic, yStatic));
+                    if(enemyDid%enemyFix==0) {
+                        Thread.sleep(rnd.nextInt(5000) + 3500);
+                    }
+                    else {
+                        Thread.sleep(rnd.nextInt(3000) + 1000); //rnd.nextInt(200)+1400,rnd.nextInt(200)+800
+                    }
+                    enemyDid++;
+                    Log.d(TAG,"!!!!!!!!!!!!");
+                    enemy.add(new Enemy(rnd.nextInt((80000/1184)*xStatic) + (20000/1184)*xStatic, rnd.nextInt((20000/768)*yStatic) + (40000/768)*yStatic, BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3), BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3), xStatic, yStatic));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -272,22 +303,37 @@ public class TheGame extends View implements Runnable{
 
         Iterator<Bullet> b = ballEnemy.iterator();
         while(b.hasNext()) {
-            Bullet balls = b.next();
-            if(Math.abs(balls.x - hero.x) <=3*xStatic && Math.abs(balls.y - hero.y) <=5*yStatic){
-                try {
-                    b.remove();
-                    progressBar.setProgress(progressBar.getProgress()-enemiesDamage);
-                } catch (IllegalStateException e) {
+            try {
+                Bullet balls = b.next();
+                if(Math.abs(balls.x - hero.x) <=3*xStatic && Math.abs(balls.y - hero.y) <=5*yStatic){
+                    try {
+                        b.remove();
+                        progressBar.setProgress(progressBar.getProgress()-enemiesDamage);
+                    } catch (IllegalStateException e) {
 
-                }
-                same++;
-                Log.d(TAG,progressBar.getProgress()+" "+same);
+                    }
+                    same++;
+                    Log.d(TAG,progressBar.getProgress()+" "+same);
 
-                if (progressBar.getProgress()<=0) {
-                    hero.paint.setColor(R.color.black);
-                    ((GameActivity)this.getContext()).maxScore(killCount);
+                    if (progressBar.getProgress()<=0) {
+                        hero.paint.setColor(R.color.black);
+                        enemiesCount=0;
+                        gaming=false;
+                        TextView textDead;
+                        LinearLayout layoutDead;
+                        ImageView imageDead;
+                        textDead=(TextView)((GameActivity)this.getContext()).findViewById(R.id.textDead);
+                        layoutDead=(LinearLayout) ((GameActivity)this.getContext()).findViewById(R.id.layoutDead);
+                        layoutDead.setVisibility(VISIBLE);
+                        textDead.setVisibility(VISIBLE);
+                        ((GameActivity)this.getContext()).maxScore(killCount);
+                    }
                 }
             }
+            catch (ConcurrentModificationException e){
+
+            }
+
         }
     }
 }
