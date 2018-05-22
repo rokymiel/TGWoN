@@ -24,18 +24,21 @@
 
         <LinearLayout
             android:id="@+id/layoutBut"
-            android:layout_width="140dp"
+            android:layout_width="210dp"
             android:layout_height="140dp"
             android:layout_alignParentBottom="true"
 
+
             android:orientation="vertical">
+
 
             <Button
                 android:id="@+id/buttonV"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:layout_gravity="right"
-                android:onClick="shot" />
+                android:layout_gravity="center"
+                android:onClick="shot"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +48,8 @@
                 <Button
                     android:id="@+id/buttonL"
                     android:layout_width="70dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:visibility="invisible" />
 
 
             </LinearLayout>
@@ -115,10 +119,9 @@
         android:id="@+id/imageDead"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/dead"
         android:scaleType="centerCrop"
         android:visibility="invisible"
-        />
+        app:srcCompat="@drawable/dead" />
 
 
 </FrameLayout>

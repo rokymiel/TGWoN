@@ -33,7 +33,7 @@ public class Sky {
     void drawSky(Canvas canvas)
     {
         canvas.drawColor(Color.BLACK);
-        paint.setColor(Color.YELLOW);
+        paint.setColor(Color.WHITE);
         paint.setStrokeWidth(2);
         for (int i = 0; i < numStars; i++)
         {

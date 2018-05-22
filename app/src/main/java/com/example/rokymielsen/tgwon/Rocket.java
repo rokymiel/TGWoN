@@ -21,7 +21,7 @@ public class Rocket {
     boolean end;
     float ex,ey;
     float a,b,c;
-    float vy=1,vx=1;
+    float vy= (float) 1.5,vx=1;
     String rotation;
     Bitmap pic;
 
