@@ -10,39 +10,28 @@ import android.widget.Toast;
 public class Bullet {
     private Bitmap bmp;
 
-    /**Позиция*/
     public float x;
     public float y;
     public float ex;
     public float ey;
-
-    /**Скорость по Х=15*/
-    private int mSpeed=10;
-
     public double angle;
     public double angle2;
-
-    /**Ширина*/
     public int width;
-
-    /**Ввыоста*/
     public  int height;
-
+    float vx,vy;
     public TheGame gameView;
-
-    /**Конструктор*/
     public Bullet(TheGame gameView, Bitmap bmp, float bX,float bY,float endX,float endY) {
         this.gameView=gameView;
         this.bmp=bmp;
 
-        this.x = bX;            //позиция по Х
+        this.x = bX;
         this.y = bY;
-        this.ex = endX;            //позиция по Х
-        this.ey = endY; //позиция по У
-        this.width = (int)(bmp.getWidth()*0.3f);       //ширина снаряда
-        this.height = (int)(bmp.getHeight()*0.3f);      //высота снаряда
+        this.ex = endX;
+        this.ey = endY;
+        this.width = (int)(bmp.getWidth()*0.3f);
+        this.height = (int)(bmp.getHeight()*0.3f);
 
-        //угол полета пули в зависипости от координаты косания к экрану
+
         double otnosh =((double)(ey-y) / (ex-x));
         angle = Math.toDegrees(Math.atan(otnosh));
         angle2 = (Math.atan(otnosh));
@@ -57,10 +46,6 @@ public class Bullet {
     }
 
 
-
-
-    /**Перемещение объекта, его направление*/
-    float vx,vy;
     private void moveX_Y(){
         this.vx=this.ex-this.x;
         this.vy=this.ey-this.y;
@@ -72,19 +57,14 @@ public class Bullet {
     private void update() {
         this.x+=this.vx;
         this.y+=this.vy;
-        //x += mSpeed * Math.cos(angle2);         //движение по Х со скоростью mSpeed и углу заданном координатой angle
-        //y += mSpeed * Math.sin(angle2);         // движение по У -//-
     }
 
-    /**Рисуем наши спрайты*/
+
     Matrix matrix = new Matrix();
     Paint paint=new Paint();
     public void onDraw(Canvas canvas) {
-
-        update();                              //говорим что эту функцию нам нужно вызывать для работы класса
+        update();
         matrix.setScale(0.3f, 0.3f);
-        //Study mathematics, dear young programmer :)
-
         matrix.postRotate((float) angle+ 0 );
         matrix.postTranslate(x, y);
         paint.setAlpha(255);

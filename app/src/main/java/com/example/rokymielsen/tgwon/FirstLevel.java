@@ -34,10 +34,6 @@ public class FirstLevel extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        /*View view = inflater.inflate(R.layout.activity_game,
-                container, false);*/
-
-        //return super.onCreateView(inflater, container, savedInstanceState);
 
         return inflater.inflate(R.layout.first_level,null);
     }
@@ -47,34 +43,25 @@ public class FirstLevel extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         layout=(LinearLayout) view.findViewById(R.id.layoutBut);
-        //side= new GameActivity().side;
+
         context= view.getContext();
        text = (TextView) view.findViewById(R.id.killCount);
        game = (TheGame) view.findViewById(R.id.theGame);
 
          lp = (RelativeLayout.LayoutParams) layout.getLayoutParams();
 
-       /* Button forward = (Button) view.findViewById(R.id.buttonV);
-        forward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast toast = Toast.makeText(v.getContext(),
-                        "2", Toast.LENGTH_SHORT);
-                toast.show();
 
-            }
-        });
-        super.onViewCreated(view, savedInstanceState);*/
+        //super.onViewCreated(view, savedInstanceState);
     }
     String side;
-    GameActivity gameActivity;
+
     public void resume(String side){
-        //side= new GameActivity().side;
+
         this.side= side;
 
        switch (side) {
             case "LEFT":
-                //lp.removeRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
                 lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 break;
             case "RIGHT":
@@ -83,12 +70,6 @@ public class FirstLevel extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //resume();
-
-    }
 
 
 }

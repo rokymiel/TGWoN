@@ -37,7 +37,7 @@
 
     </RadioGroup>
 
-    
+
 
     <TextView
         android:id="@+id/textView"

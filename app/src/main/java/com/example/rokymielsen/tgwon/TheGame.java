@@ -46,8 +46,18 @@ public class TheGame extends View implements Runnable{
     float shotX,shotY;
     TextView text;
     boolean gaming=true;
-
-
+    int damdge=50;
+    int enemiesDamage=20;
+    Bitmap bmp ;
+    float bX,bY;
+    Random rnd = new Random();
+    private Thread thread = new Thread(this);
+    float enemyX,enemyY,heroX,heroY;
+    int enemyFix=10;
+    int enemyDid=1;
+    TextView tx;
+    ProgressBar progressBar;
+    int same=0;
 
     public TheGame(Context context, AttributeSet attrs/*,Canvas canvas*/) {
         super(context,attrs);
@@ -57,6 +67,9 @@ public class TheGame extends View implements Runnable{
         yStatic=scaleHeight/100;
 
         hero= new ControlledHero(42*xStatic,50*yStatic,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip),xStatic,yStatic);
+        shotX=50*xStatic;
+        shotY=50*yStatic;
+
         enemiesCount=100;
         //enemy.add(new Enemy(900,200));
 
@@ -124,12 +137,12 @@ public class TheGame extends View implements Runnable{
         invalidate();
 
     }
-    Bitmap bmp ;
+
     public Bullet createSprite(float bX,float bY,float shotX,float shotY) {
         //Bitmap bmp = BitmapFactory.decodeResource(getResources(), resouce);
         return new Bullet(this, bmp,bX,bY,shotX,shotY);
     }
-    float bX,bY;
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -154,10 +167,6 @@ public class TheGame extends View implements Runnable{
 
 
     public void shotTouch(){
-        /*Toast toast = Toast.makeText(getContext(),
-                "Пора покормить кота!", Toast.LENGTH_SHORT);
-        toast.show();*/
-        //ball.add(createSprite(R.drawable.bullet));
         if(gaming) {
             if (hero.endShoot) {
                 bX = hero.x;
@@ -167,8 +176,8 @@ public class TheGame extends View implements Runnable{
             }
         }
     }
-    Random rnd = new Random();
-    private Thread thread = new Thread(this);
+
+
     @Override
     public void run() {
         try {
@@ -189,16 +198,6 @@ public class TheGame extends View implements Runnable{
 
 
     }
-    void enemiesShootFalse(){
-
-        Iterator<Enemy> i = enemy.iterator();
-        while(i.hasNext()) {
-            Enemy enemies = i.next();
-            enemies.shoot=false;
-            //Log.d(TAG,"ENEMIES");
-        }
-    }
-    float enemyX,enemyY,heroX,heroY;
     void enemiesShoot(){
         if(gaming) {
             Iterator<Enemy> i = enemy.iterator();
@@ -222,8 +221,7 @@ public class TheGame extends View implements Runnable{
         }
     }
 
-    int enemyFix=10;
-    int enemyDid=1;
+
     class MyThread extends Thread {
         public void run() {
             while (enemiesCount > 0) {
@@ -248,11 +246,6 @@ public class TheGame extends View implements Runnable{
         }
     }
 
-    int damdge=50;
-    int enemiesDamage=20;
-
-
-    TextView tx;
     private void testCollision() {
         tx = (TextView)((GameActivity)this.getContext()).findViewById(R.id.killCount);
         Iterator<Bullet> b = ball.iterator();
@@ -294,9 +287,6 @@ public class TheGame extends View implements Runnable{
         }
     }
 
-    ProgressBar progressBar;
-    int same=0;
-
     @SuppressLint("ResourceAsColor")
     private void heatHero(){
         progressBar = (ProgressBar) ((GameActivity)this.getContext()).findViewById(R.id.heroHealth);
@@ -337,27 +327,3 @@ public class TheGame extends View implements Runnable{
         }
     }
 }
-
-
-
-
-
-/*flag++;
-                    if (flag%3==1){ enemies.health-=damdge;Log.d(TAG,"ENEMIES"+ enemies.health);
-                        try {
-
-                            b.remove();
-                        } catch (IllegalStateException e) {
-
-                        }
-                    }
-                    //Log.d(TAG,"ENEMIES"+ flag);
-                    if (enemies.health <=0) {
-                        try {
-                            i.remove();
-                            b.remove();
-                            killCount++;
-                        } catch (IllegalStateException e) {
-
-                        }
-                    }*/

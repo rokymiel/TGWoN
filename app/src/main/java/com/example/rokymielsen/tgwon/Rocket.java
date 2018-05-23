@@ -49,8 +49,6 @@ public class Rocket {
         b=-2*a*ey;
         c=x-a*y*y-b*y;
     }
-    void gag(){final String TAG= "Rocket";
-        Log.d(TAG,"motion");}
 
 
     void move(){
@@ -73,8 +71,6 @@ public class Rocket {
     void draw(Canvas canvas)
     {
         matrix.setScale(0.2f, 0.2f);
-        //Study mathematics, dear young programmer :)
-
         matrix.postRotate((float)Math.toDegrees(Math.atan2(vy, vx)) + 45);
         matrix.postTranslate(x, y);
         paint.setAlpha(255);

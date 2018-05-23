@@ -23,11 +23,21 @@ public class Hero {
     Bitmap spritesLag;
     int health=100;
     int xStatic,yStatic;
+    Bitmap bitmap;
+    int secFrame=0;
+    int sec2Frame=0;
+    int xFrame=0,eFrame=0;
+    boolean shoot=false;
+    boolean endShoot=true;
+    int xLag;
+    int yLag;
+    int xAlex;
+    int yAlex;
+    double angle=0;
+    float eX,eY;
 
-    Hero( /*Bitmap sprites,*//*Canvas canvas*/float x, float y,Bitmap spritesLag, Bitmap sprites,int xStatic,int yStatic ){
-       // this.sprites= sprites;
-        /*x=canvas.getWidth()/2;
-        y=canvas.getHeight()/2;*/
+    Hero( float x, float y,Bitmap spritesLag, Bitmap sprites,int xStatic,int yStatic ){
+
         this.xStatic=xStatic;
         this.yStatic=yStatic;
         this.x=x;
@@ -42,31 +52,17 @@ public class Hero {
         yAlex=sprites.getHeight();
         oldX=x;
         oldY=y;
-        Log.d(TAG,xStatic+"---------------------------------------------");
-        //paint.setColor(Color.YELLOW);
     }
 
     void move(){
-       // if ((vx+x>centralX-50 && vx+x<centralX+50)&&(vy+y>centralY-50&& vy+y<centralY+50)){
+
 
             x+=vx;
             y+=vy;
 
-       // }
 
     }
-    Bitmap bitmap;
-    int secFrame=0;
-    int sec2Frame=0;
-    int xFrame=0,eFrame=0;
-    boolean shoot=false;
-    boolean endShoot=true;
-    int xLag;
-    int yLag;
-    int xAlex;
-    int yAlex;
-    double angle=0;
-    float eX,eY;
+
 
 
     void  setEnd(float toX, float toY){
@@ -89,10 +85,6 @@ public class Hero {
 
                 xFrame++;
                 xFrame %= 10;
-            /*if (xFrame % 8 == 0) {
-                yFrame++;
-                yFrame %= 4;
-            }*/
 
         }
 
@@ -122,8 +114,6 @@ public class Hero {
         canvas.rotate((float)angle+0+90,x,y);
         canvas.drawBitmap(sprites, frameH, toH, paint);
         canvas.restore();
-
-       //canvas.drawCircle(x,y,r,paint);
 
 
     }

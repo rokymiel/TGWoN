@@ -20,7 +20,7 @@ public class Sky {
 
     void makeSky(int scaleWidth,int scaleHeight)
     {
-        // Звезды генерируются в зоне maxX на maxY
+
         int maxX = scaleWidth;
         int maxY = 2*scaleHeight;
         for (int i = 0; i < numStars; i++)

@@ -13,6 +13,7 @@ public class ControlledHero extends Hero {
 
     ControlledHero(float x, float y, Bitmap bitmap, Bitmap decodeResource,int xStatic,int yStatic) {
         super(x, y,bitmap,decodeResource,xStatic,yStatic);
+
     }
 
 

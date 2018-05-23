@@ -15,7 +15,7 @@ import static android.content.ContentValues.TAG;
 public class Fire {
     float x,y;
     public static boolean crash=false;
-    int spriteX,spriteY=0;int xFrame=0,yFrame=0;
+    int xFrame=0,yFrame=0;
     int secFrame=0;
     int xFire;
     int yFire;

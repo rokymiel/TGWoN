@@ -11,7 +11,6 @@ public class Enemy {
     float r =50;
     float vx=0,vy=0;
     float endX=300, endY=300;
-    boolean life=true;
     int health=100;
     Paint paint= new Paint();
     public int height;
@@ -91,10 +90,6 @@ public class Enemy {
 
             xFrame++;
             xFrame %= 10;
-            /*if (xFrame % 8 == 0) {
-                yFrame++;
-                yFrame %= 4;
-            }*/
 
         }
         Rect toH = new Rect((int) x - (6400/1184)*xStatic, (int) y - (6400/768)*yStatic, (int) x + (6400/1184)*xStatic, (int) y +(6400/768)*yStatic  );
@@ -122,7 +117,6 @@ public class Enemy {
         canvas.drawBitmap(sprites, frameH, toH, paint);
         canvas.restore();
 
-        //canvas.drawCircle(x,y,r,paint);
 
     }
 
