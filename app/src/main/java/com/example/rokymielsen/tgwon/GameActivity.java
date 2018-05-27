@@ -1,28 +1,33 @@
 package com.example.rokymielsen.tgwon;
 
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v4.app.FragmentActivity;
-
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 
 public class GameActivity extends FragmentActivity {
+    private static final String TAG ="!!!!!!!!!!" ;
     FirstLevel firstLevel= new FirstLevel();
+    CutScens1 cutScens1= new CutScens1();
     TheGame game;
     LinearLayout layout;
     FrameLayout frameLayout;
     RelativeLayout.LayoutParams layoutParams;
+    boolean noCut=false;
 
 
 
@@ -33,10 +38,7 @@ public class GameActivity extends FragmentActivity {
         setContentView(R.layout.activity_game);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-        fragmentTransaction.add(R.id.game,firstLevel).commit();
+       getSupportFragmentManager().beginTransaction().add(R.id.scen,cutScens1).commit();
 
 
 
@@ -50,24 +52,52 @@ public class GameActivity extends FragmentActivity {
     public  String side;
     @Override
     protected void onResume()  {
-        super.onResume();
-        SharedPreferences preferences= getSharedPreferences("buttonLayout",MODE_PRIVATE);
-        side =preferences.getString("buttonSide","LEFT");
-        firstLevel.resume(side);
-        startService(new Intent(this, MyService.class));
 
+        super.onResume();
+            SharedPreferences preferences = getSharedPreferences("buttonLayout", MODE_PRIVATE);
+            side = preferences.getString("buttonSide", "LEFT");
     }
 
 
 
     public void shot(View v){
         game= (TheGame) findViewById(R.id.theGame);
-
         game.shotTouch();
     }
+    public void music(){
+        startService(new Intent(this, MyService.class));
+    }
+
+
+    public void next(View v){
+        noCut=true;
+        try {
+            cutScens1.delay.cancel(true);
+            cutScens1.delay=null;
+        }
+        catch (NullPointerException e){
+
+        }
+
+
+if(firstLevel.isAdded()){
+    getSupportFragmentManager().beginTransaction().show(firstLevel);
+}else {
+    getSupportFragmentManager().beginTransaction().remove(cutScens1)
+            .commit();
+    getSupportFragmentManager().beginTransaction().add(R.id.game, firstLevel).commit();
+}
+        }
+
     public void onBackPressed() {
-        stopService(new Intent(this, MyService.class));
-        this.finish();
+        if(noCut) {
+            stopService(new Intent(this, MyService.class));
+            this.finish();
+        }else{
+            cutScens1.delay.cancel(true);
+            cutScens1.delay=null;
+            this.finish();
+        }
     }
 
     @Override
@@ -89,4 +119,7 @@ public class GameActivity extends FragmentActivity {
         }
 
     }
+
+
+
 }

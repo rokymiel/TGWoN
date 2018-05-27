@@ -1,7 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#969696"
+    android:id="@+id/cutScen">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#969696">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:id="@+id/lose"
+                android:text="Пропустить"
+                android:onClick="next"/>
+
+            <TextView
+                android:id="@+id/textScen1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:visibility="invisible"
+                android:textColor="@color/black"
+                android:textSize="27dp" />
+            <TextView
+                android:id="@+id/textScen2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="27dp"
+                android:visibility="invisible"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/textScen3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="27dp"
+                android:visibility="invisible"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/textScen4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="27dp"
+                android:visibility="invisible"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/textScen5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="TextView"
+                android:textSize="27dp"
+                android:visibility="invisible"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/textScen6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="27dp"
+                android:visibility="invisible"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/textScen7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="27dp"
+                android:visibility="invisible"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/textScen8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="27dp"
+
+                android:visibility="invisible"
+                android:textColor="@color/black"/>
+
+
+            <Button
+                android:id="@+id/buttonNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:text="Продолжить"
+                android:onClick="next"
+                />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 
 

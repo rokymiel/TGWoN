@@ -1,6 +1,7 @@
 package com.example.rokymielsen.tgwon;
 
-import android.app.Fragment;
+
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -49,7 +50,8 @@ public class FirstLevel extends Fragment {
        game = (TheGame) view.findViewById(R.id.theGame);
 
          lp = (RelativeLayout.LayoutParams) layout.getLayoutParams();
-
+        resume(((GameActivity)this.getContext()).side);
+        ((GameActivity)this.getContext()).music();
 
         //super.onViewCreated(view, savedInstanceState);
     }

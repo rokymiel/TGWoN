@@ -234,7 +234,6 @@ public class TheGame extends View implements Runnable{
                         Thread.sleep(rnd.nextInt(3000) + 1000); //rnd.nextInt(200)+1400,rnd.nextInt(200)+800
                     }
                     enemyDid++;
-                    Log.d(TAG,"!!!!!!!!!!!!");
                     enemy.add(new Enemy(rnd.nextInt((80000/1184)*xStatic) + (20000/1184)*xStatic, rnd.nextInt((20000/768)*yStatic) + (40000/768)*yStatic, BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3), BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3), xStatic, yStatic));
                 } catch (InterruptedException e) {
                     e.printStackTrace();

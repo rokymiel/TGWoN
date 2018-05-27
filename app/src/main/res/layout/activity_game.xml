@@ -12,6 +12,13 @@
         android:weightSum="1">
 
     </FrameLayout>
+    <FrameLayout
+        android:id="@+id/scen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+    </FrameLayout>
 
 
 </FrameLayout>
