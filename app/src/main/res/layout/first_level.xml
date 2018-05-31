@@ -23,6 +23,27 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/joystickLayout"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true">
+            <io.github.controlwear.virtual.joystick.android.JoystickView
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:id="@+id/joystickView"
+                custom:JV_buttonColor="#04328f"
+                custom:JV_buttonSizeRatio="25%"
+                custom:JV_borderColor="#00796B"
+                custom:JV_backgroundColor="#90969696"
+                custom:JV_borderWidth="2dp"
+                custom:JV_fixedCenter="false"
+                />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/layoutBut"
             android:layout_width="210dp"
             android:layout_height="140dp"

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,6 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.github.controlwear.virtual.joystick.android.JoystickView;
+
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -40,22 +44,35 @@ public class FirstLevel extends Fragment {
     }
     TheGame game;
     TextView text;
-    RelativeLayout.LayoutParams lp;Context context;
+    RelativeLayout.LayoutParams lp;
+    RelativeLayout.LayoutParams joyLp;Context context;
+    LinearLayout joystickLayout;
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         layout=(LinearLayout) view.findViewById(R.id.layoutBut);
+        joystickLayout=(LinearLayout) view.findViewById(R.id.joystickLayout);
 
         context= view.getContext();
        text = (TextView) view.findViewById(R.id.killCount);
        game = (TheGame) view.findViewById(R.id.theGame);
-
+        joyLp=(RelativeLayout.LayoutParams) joystickLayout.getLayoutParams();
          lp = (RelativeLayout.LayoutParams) layout.getLayoutParams();
         resume(((GameActivity)this.getContext()).side);
         ((GameActivity)this.getContext()).music();
+        JoystickView joystick = (JoystickView) ((GameActivity)this.getContext()).findViewById(R.id.joystickView);
+        joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+            @Override
+            public void onMove(int angle, int strength) {
+                //.makeText(view.getContext(),angle,Toast.LENGTH_SHORT).show();
+                game.action(strength);
+            }
+        });
+
 
         //super.onViewCreated(view, savedInstanceState);
     }
     String side;
+
 
     public void resume(String side){
 
@@ -63,10 +80,11 @@ public class FirstLevel extends Fragment {
 
        switch (side) {
             case "LEFT":
-
+                joyLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 break;
             case "RIGHT":
+                joyLp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 break;
         }

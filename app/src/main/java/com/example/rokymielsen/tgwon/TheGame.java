@@ -26,6 +26,8 @@ package com.example.rokymielsen.tgwon;
         import java.util.List;
         import java.util.Random;
 
+        import io.github.controlwear.virtual.joystick.android.JoystickView;
+
         import static android.content.ContentValues.TAG;
         import static android.content.Context.MODE_PRIVATE;
 
@@ -61,7 +63,7 @@ public class TheGame extends View implements Runnable{
     ProgressBar progressBar;
     int same=0;
 
-    public TheGame(Context context, AttributeSet attrs/*,Canvas canvas*/) {
+    public TheGame(final Context context, AttributeSet attrs/*,Canvas canvas*/) {
         super(context,attrs);
         scaleWidth=displaymetrics.widthPixels;
         scaleHeight=displaymetrics.heightPixels;
@@ -79,6 +81,11 @@ public class TheGame extends View implements Runnable{
         myThread.start();
         thread.start();
        bmp = BitmapFactory.decodeResource(getResources(),R.drawable.bullet);
+
+
+
+
+
         //View view = fragment.getActiiviity().findViiewById(R.id.flID);
 
 
@@ -198,6 +205,10 @@ public class TheGame extends View implements Runnable{
             }
         }
 
+
+    }
+    public void action(int str){
+        Log.d(TAG,str+"CCCCCCCCCC");
 
     }
     void enemiesShoot(){
