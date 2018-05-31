@@ -12,9 +12,11 @@ package com.example.rokymielsen.tgwon;
         import android.util.Log;
         import android.view.MotionEvent;
         import android.view.View;
+        import android.widget.FrameLayout;
         import android.widget.ImageView;
         import android.widget.LinearLayout;
         import android.widget.ProgressBar;
+        import android.widget.RelativeLayout;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -238,6 +240,7 @@ public class TheGame extends View implements Runnable{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
                 enemiesCount--;
 
             }
@@ -308,13 +311,15 @@ public class TheGame extends View implements Runnable{
                         hero.paint.setColor(R.color.black);
                         enemiesCount=0;
                         gaming=false;
-                        TextView textDead;
-                        LinearLayout layoutDead;
+                        FrameLayout layoutDead;
                         ImageView imageDead;
-                        textDead=(TextView)((GameActivity)this.getContext()).findViewById(R.id.textDead);
-                        layoutDead=(LinearLayout) ((GameActivity)this.getContext()).findViewById(R.id.layoutDead);
+                        RelativeLayout relativeLayout;
+                        relativeLayout=(RelativeLayout) ((GameActivity)this.getContext()).findViewById(R.id.layoutButton);
+                        imageDead=(ImageView)((GameActivity)this.getContext()).findViewById(R.id.imageDead);
+                        layoutDead=(FrameLayout) ((GameActivity)this.getContext()).findViewById(R.id.layoutDead);
                         layoutDead.setVisibility(VISIBLE);
-                        textDead.setVisibility(VISIBLE);
+                        imageDead.setVisibility(VISIBLE);
+                        relativeLayout.setVisibility(VISIBLE);
                         ((GameActivity)this.getContext()).maxScore(killCount);
                     }
                 }

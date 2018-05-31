@@ -30,15 +30,14 @@
 
 
             android:orientation="vertical">
-
-
             <Button
                 android:id="@+id/buttonV"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
                 android:onClick="shot"
-                />
+                android:background="@drawable/fire_button"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,6 +49,7 @@
                     android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:visibility="invisible" />
+
 
 
             </LinearLayout>
@@ -95,33 +95,46 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/layoutDead"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#90000000"
         android:orientation="horizontal"
-        android:visibility="invisible"></LinearLayout>
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/imageDead"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/dead_crop"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/layoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="55dp"
+                android:text="Заново"
+                android:textSize="25dp"
+                android:onClick="reStart"/>
+
+        </RelativeLayout>
 
 
-    <TextView
-        android:id="@+id/textDead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:shadowColor="#8C0304"
-        android:text="You are dead"
-        android:textColor="#AD0001"
-        android:textSize="60dp"
-        android:visibility="invisible" />
+    </FrameLayout>
 
-    <ImageView
-        android:id="@+id/imageDead"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/dead" />
+
+
 
 
 </FrameLayout>
