@@ -70,7 +70,7 @@ public class TheGame extends View implements Runnable{
         xStatic =scaleWidth/100;
         yStatic=scaleHeight/100;
 
-        hero= new ControlledHero(42*xStatic,50*yStatic,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip),xStatic,yStatic);
+        hero= new ControlledHero(scaleWidth/2,scaleHeight/2,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip),xStatic,yStatic);
         shotX=50*xStatic;
         shotY=50*yStatic;
 
@@ -151,6 +151,96 @@ public class TheGame extends View implements Runnable{
         //Bitmap bmp = BitmapFactory.decodeResource(getResources(), resouce);
         return new Bullet(this, bmp,bX,bY,shotX,shotY);
     }
+
+    public void setHeroAngle(int angle){
+        hero.joyAngle=90-angle;
+    }
+    int angle=0,strength=0;
+
+    public void setMapMotion(int angle, int strength){
+        this.angle=angle;this.strength=strength;
+        setenEmiesEnd();
+
+    }
+    int motionSide;
+    int delY;
+    int cX=4,cY=1;
+    int chX,chY;
+    int k,b;
+    float vx,vy;
+
+
+    public void setenEmiesEnd(){
+        Iterator<Enemy> i = enemy.iterator();
+        while (i.hasNext()) {
+
+            Enemy enemies = i.next();
+            /*if (angle>=0&&angle<=90){
+                chX=-cX;
+                chY=cY;
+            }
+            else if(angle>90&& angle<=180){
+                chX=cX;
+                chY=cY;
+            }else if (angle>180 && angle<=270){
+                chX=cX;
+                chY=-cY;
+            } else if (angle>270 && angle<=360){
+                chX=-cX;
+                chY=-cY;
+            }
+            enemies.x+=chX;
+            motionSide= (int) (cX/Math.sin(Math.toRadians(angle)));
+            motionSide*=motionSide;
+            delY=motionSide-chX*chX;
+            delY=(int)(Math.sqrt(delY));
+            enemies.y+=chY*delY;*/
+/*
+           k= (int) Math.tan(angle);
+           b= (int) (enemies.y-k*enemies.x);
+           int eY=k*cX+b;
+           enemies.y=eY;*/
+            //Log.d(TAG,+"");
+            /*if (angle>=0&&angle<=90){
+                motionSide= (int) (3/Math.sin(Math.toRadians(angle)));
+                vx=3;
+                vy= (float) Math.sqrt(motionSide*motionSide-vx);
+                vx=(vx/motionSide)*3;
+                vy=(vy/motionSide)*3;
+                enemies.x+=vx;
+                enemies.y+=vy;
+
+            }
+            else if(angle>90&& angle<=180){
+
+            }else if (angle>180 && angle<=270){
+
+            } else if (angle>270 && angle<=360){
+
+            }*/
+
+            motionSide=9;
+            chX= (int) (motionSide*Math.cos(Math.toRadians(-angle)));
+            chY= (int) (motionSide*Math.sin(Math.toRadians(-angle)));
+            /*vx=(chX/motionSide)*3;
+            vy=(chY/motionSide)*3;*/
+            enemies.x-=chX;
+            enemies.y-=chY;
+
+
+/*            this.endX=endX;
+            this.endY=endY;
+            this.vx=this.endX-this.x;
+            this.vy=this.endY-this.y;
+            float d =(float)Math.sqrt(vx*vx+vy*vy);
+            this.vx=(this.vx/d)*3;
+            this.vy=(this.vy/d)*3;*/
+
+
+        }
+    }
+
+
 
 
     @Override

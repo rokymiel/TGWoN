@@ -18,16 +18,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameActivity" />
-        <activity android:name=".SettingsAppActivity" />
-        <activity android:name=".SignActivity" />
+        <activity android:name=".GameActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".SettingsAppActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".SignActivity"
+            android:screenOrientation="landscape"/>
 
         <service
             android:name=".MyService"
             android:enabled="true" />
 
-        <activity android:name=".ScoreActivity" />
-        <activity android:name=".RegistrActivity"></activity>
+        <activity android:name=".ScoreActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".RegistrActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

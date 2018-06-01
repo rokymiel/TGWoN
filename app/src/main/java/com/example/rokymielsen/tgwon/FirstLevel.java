@@ -64,8 +64,13 @@ public class FirstLevel extends Fragment {
             @Override
             public void onMove(int angle, int strength) {
                 //.makeText(view.getContext(),angle,Toast.LENGTH_SHORT).show();
-                game.action(strength);
+                game.action(angle);
+                if (angle!=0) {
+                    game.setHeroAngle(angle);
+                }
+                game.setMapMotion(angle,strength);
             }
+
         });
 
 

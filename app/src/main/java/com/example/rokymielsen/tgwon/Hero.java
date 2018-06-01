@@ -35,6 +35,7 @@ public class Hero {
     int yAlex;
     double angle=0;
     float eX,eY;
+    int joyAngle=0;
 
     Hero( float x, float y,Bitmap spritesLag, Bitmap sprites,int xStatic,int yStatic ){
 
@@ -106,12 +107,12 @@ public class Hero {
         secFrame++;
 
         canvas.save();
-        canvas.rotate((float)angle+0+90,x,y);
+        canvas.rotate((float)joyAngle+0,x,y);
         canvas.drawBitmap(spritesLag, frame, to, paint);
         canvas.restore();
 
         canvas.save();
-        canvas.rotate((float)angle+0+90,x,y);
+        canvas.rotate((float)joyAngle+0,x,y);
         canvas.drawBitmap(sprites, frameH, toH, paint);
         canvas.restore();
 
