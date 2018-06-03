@@ -6,6 +6,8 @@ package com.example.rokymielsen.tgwon;
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
         import android.graphics.Canvas;
+        import android.graphics.Color;
+        import android.graphics.Paint;
         import android.graphics.Rect;
         import android.util.AttributeSet;
         import android.util.DisplayMetrics;
@@ -62,6 +64,9 @@ public class TheGame extends View implements Runnable{
     TextView tx;
     ProgressBar progressBar;
     int same=0;
+    Rect backRect;
+    Paint paint= new Paint();
+    int rectX,rectY,rectEndX,rectEndY;
 
     public TheGame(final Context context, AttributeSet attrs/*,Canvas canvas*/) {
         super(context,attrs);
@@ -69,11 +74,19 @@ public class TheGame extends View implements Runnable{
         scaleHeight=displaymetrics.heightPixels;
         xStatic =scaleWidth/100;
         yStatic=scaleHeight/100;
-
+        rectX=20;
+        rectY=20;
+        rectEndX=scaleWidth-rectX;
+        rectEndY=scaleHeight-rectY;
         hero= new ControlledHero(scaleWidth/2,scaleHeight/2,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip),xStatic,yStatic);
+        hero.joyAngle=90;
         shotX=50*xStatic;
         shotY=50*yStatic;
 
+        backRect= new Rect(rectX,rectY,rectEndX,rectEndY);
+        paint.setColor(Color.GRAY);
+        paint.setStrokeWidth(10);
+        paint.setStyle(Paint.Style.STROKE);
         enemiesCount=100;
         //enemy.add(new Enemy(900,200));
 
@@ -95,7 +108,7 @@ public class TheGame extends View implements Runnable{
     protected void onDraw(Canvas canvas) {
         testCollision();
         heatHero();
-
+        //canvas.drawRect(backRect,paint);
          hero.draw(canvas);
          hero.move();
 
@@ -160,14 +173,28 @@ public class TheGame extends View implements Runnable{
     public void setMapMotion(int angle, int strength){
         this.angle=angle;this.strength=strength;
         setenEmiesEnd();
+       // setRectPosition();
 
     }
-    int motionSide;
+    int motionSide=9*(scaleWidth/1184);
     int delY;
     int cX=4,cY=1;
     int chX,chY;
     int k,b;
     float vx,vy;
+    int motionRectSide,motionRectX,motionRrectY;
+    public void setRectPosition(){
+
+        motionRectSide=20*(scaleWidth/1184);
+        motionRectX= (int) (motionSide*Math.cos(Math.toRadians(-angle)));
+        motionRrectY= (int) (motionSide*Math.sin(Math.toRadians(-angle)));
+        rectX-=motionRectX;
+        rectY-=motionRrectY;
+        rectEndX-=motionRectX;
+        rectEndY-=motionRrectY;
+        backRect=new Rect(rectX,rectY,rectEndX,rectEndY);
+
+    }
 
 
     public void setenEmiesEnd(){
@@ -175,6 +202,7 @@ public class TheGame extends View implements Runnable{
         while (i.hasNext()) {
 
             Enemy enemies = i.next();
+            motionSide=20*(scaleWidth/1184);
             /*if (angle>=0&&angle<=90){
                 chX=-cX;
                 chY=cY;
@@ -219,9 +247,10 @@ public class TheGame extends View implements Runnable{
 
             }*/
 
-            motionSide=9;
             chX= (int) (motionSide*Math.cos(Math.toRadians(-angle)));
             chY= (int) (motionSide*Math.sin(Math.toRadians(-angle)));
+            //Log.d(TAG,angle+"");
+
             /*vx=(chX/motionSide)*3;
             vy=(chY/motionSide)*3;*/
             enemies.x-=chX;
@@ -245,33 +274,56 @@ public class TheGame extends View implements Runnable{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (gaming) {
-            shotX = event.getX();
-            shotY = event.getY();
-            this.hero.setTarget(shotX, shotY);
-            this.hero.setEnd(shotX, shotY);
-            //hero.motion=true;
-            Iterator<Enemy> i = enemy.iterator();
-            while (i.hasNext()) {
-                Enemy enemies = i.next();
-                enemies.setSpeed(rnd.nextInt(200) + shotX - 100, rnd.nextInt(200) + shotY - 200);
+        if (true){
+
+        } else {
+            if (gaming) {
+                shotX = event.getX();
+                shotY = event.getY();
+                this.hero.setTarget(shotX, shotY);
+                this.hero.setEnd(shotX, shotY);
+                //hero.motion=true;
+                Iterator<Enemy> i = enemy.iterator();
+                while (i.hasNext()) {
+                    Enemy enemies = i.next();
+                    enemies.setSpeed(rnd.nextInt(200) + shotX - 100, rnd.nextInt(200) + shotY - 200);
 
 
+                }
             }
         }
 
 
         return /*super.onTouchEvent(event)*/ true;
     }
-
-
+    int bulletMotionSide=30;
+    int bEndX,bEndY;
     public void shotTouch(){
         if(gaming) {
             if (hero.endShoot) {
                 bX = hero.x;
                 bY = hero.y;
                 hero.heroShoot();
-                ball.add(createSprite(bX, bY, shotX, shotY));
+
+                bEndX=7*(scaleWidth/1184);
+               /* bEndX= (int) (bX+ (int) (bulletMotionSide*Math.cos(Math.toRadians(-angle))));
+                bEndY= (int) (bY+(int) (bulletMotionSide*Math.sin(Math.toRadians(-angle))));*/
+               //(80000/1184)*xStatic
+               /* bEndX=((bEndX*100)/1184)*xStatic;
+                bEndY=((bEndY*100)/768)*yStatic;*/
+                Log.d(TAG,getWidth()+"");
+                if (angle>90 && angle<270){
+                    bEndX=-bEndX;
+                }
+                bulletMotionSide= (int) (bEndX/Math.cos(Math.toRadians(-angle)));
+                bEndY= (int) (bY+(int) (bulletMotionSide*Math.sin(Math.toRadians(-angle))));
+                //bEndX+=bX;
+
+                ball.add(createSprite(bX, bY, bEndX+bX, bEndY));
+                Log.d(TAG,angle+"");
+                Log.d(TAG,bEndX+bX+"");
+                Log.d(TAG,bEndY+"");
+
             }
         }
     }
@@ -311,7 +363,7 @@ public class TheGame extends View implements Runnable{
                     enemyY = enemies.y;
                     heroX = hero.x;
                     heroY = hero.y;
-                    ballEnemy.add(createSprite(enemyX, enemyY, heroX, heroY));
+                    ballEnemy.add(createSprite(enemyX, enemyY,rnd.nextInt(200*(scaleWidth/1184)) + heroX - 100*(scaleWidth/1184), rnd.nextInt(200*(scaleHeight/768)) + heroY - 100*(scaleHeight/768)));
 
 
                     enemies.shoot = true;

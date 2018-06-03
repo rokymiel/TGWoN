@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.widget.Toast;
 
 public class Bullet {
@@ -41,17 +42,22 @@ public class Bullet {
         if ((ex<x)&&(ey>y)){
             angle+=180;
         }
+        if (ex<x&&ey==y){
+            angle+=180;
+        }
         moveX_Y();
 
     }
+    float staticSpeedX=13*(gameView.scaleWidth/1184), staticSpeedY=16*(gameView.scaleHeight/768);
+
 
 
     private void moveX_Y(){
         this.vx=this.ex-this.x;
         this.vy=this.ey-this.y;
         float d =(float)Math.sqrt(vx*vx+vy*vy);
-        this.vx=(this.vx/d)*16;
-        this.vy=(this.vy/d)*16;
+        this.vx=(this.vx/d)*staticSpeedX;
+        this.vy=(this.vy/d)*staticSpeedX;
     }
 
     private void update() {
@@ -64,7 +70,7 @@ public class Bullet {
     Paint paint=new Paint();
     public void onDraw(Canvas canvas) {
         update();
-        matrix.setScale(0.3f, 0.3f);
+        matrix.setScale(0.22f, 0.22f);
         matrix.postRotate((float) angle+ 0 );
         matrix.postTranslate(x, y);
         paint.setAlpha(255);
