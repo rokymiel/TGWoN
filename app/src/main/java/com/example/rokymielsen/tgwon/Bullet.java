@@ -48,7 +48,7 @@ public class Bullet {
         moveX_Y();
 
     }
-    float staticSpeedX=13*(gameView.scaleWidth/1184), staticSpeedY=16*(gameView.scaleHeight/768);
+    float staticSpeedX=15*(gameView.scaleWidth/1184), staticSpeedY=16*(gameView.scaleHeight/768);
 
 
 
@@ -68,6 +68,7 @@ public class Bullet {
 
     Matrix matrix = new Matrix();
     Paint paint=new Paint();
+    //float scaleBulletX=0.22f*(gameView.scaleWidth/1184),scaleBulletY=0.22f*(gameView.scaleHeight/768);
     public void onDraw(Canvas canvas) {
         update();
         matrix.setScale(0.22f, 0.22f);

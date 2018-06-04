@@ -123,8 +123,8 @@ public class TheGame extends View implements Runnable{
             Bullet b = j.next();
            // Toast.makeText(getContext(), j+"", Toast.LENGTH_LONG).show();
            // Toast.makeText(getContext(), b.x+"", Toast.LENGTH_LONG).show();
-
-            if(b.x <= scaleWidth*2 && b.x>=-8*xStatic && b.y >=-13*yStatic && b.y <=2*scaleHeight ) { //Удаление пуль
+//Удаление пуль(b.x <= scaleWidth*2 && b.x>=-8*xStatic && b.y >=-13*yStatic && b.y <=2*scaleHeight
+            if(b.x < backRect.eX-55* (scaleWidth/1184) && b.x>backRect.x+55*(scaleWidth/1184) && b.y >backRect.y+55*(scaleHeight/768) && b.y <backRect.eY-55*(scaleHeight/768) ) {
                 b.onDraw(canvas);
             } else {
                 j.remove();
@@ -136,7 +136,7 @@ public class TheGame extends View implements Runnable{
             // Toast.makeText(getContext(), j+"", Toast.LENGTH_LONG).show();
             // Toast.makeText(getContext(), b.x+"", Toast.LENGTH_LONG).show();
 
-            if(bE.x <= scaleWidth*2 && bE.x>=-8*xStatic && bE.y >=-13*yStatic && bE.y <=2*scaleHeight ) { //Удаление пуль
+            if(bE.x < backRect.eX-55*(scaleWidth/1184) && bE.x>backRect.x+55*(scaleWidth/1184) && bE.y >backRect.y+55*(scaleHeight/768) && bE.y <backRect.eY-55*(scaleHeight/768)) { //Удаление пуль
                 bE.onDraw(canvas);
             } else {
                 jE.remove();
@@ -171,7 +171,7 @@ public class TheGame extends View implements Runnable{
     }
 
     public void setHeroAngle(int angle){
-        hero.joyAngle=90-angle;
+        if(gaming) {hero.joyAngle=90-angle;}
     }
     int angle=0,strength=0;
 
@@ -180,9 +180,10 @@ public class TheGame extends View implements Runnable{
             this.angle = angle;
             this.strength = strength;
             setRectPosition();
+            setBulletMotion();
             if (!stop) {
                 setenEmiesEnd();
-                //setSpeedEnemies();
+                setSpeedEnemies();
             }
         }
     }
@@ -192,7 +193,23 @@ public class TheGame extends View implements Runnable{
             Enemy enemies = i.next();
             float rndx=rnd.nextInt(200) + hero.x - 100;
             float rndy=rnd.nextInt(200) + hero.y - 200;
-            enemies.setSpeed(rndx, rndy);
+            if (backRect.x<rndx && backRect.eX>rndx && backRect.y<rndy && backRect.eY>rndy) {
+                enemies.setSpeed(rndx, rndy);
+            }else{
+                if (rndx<backRect.x){
+                    rndx=2*backRect.x-rndx;
+                }
+                if(rndx>backRect.eX){
+                    rndx=2*backRect.eX-rndx;
+                }
+                if (rndy<backRect.y){
+                    rndy=2*backRect.y-rndy;
+                }
+                if(rndy>backRect.eY){
+                    rndy=2*backRect.eY-rndy;
+                }
+                enemies.setSpeed(rndx, rndy);
+            }
 
 
         }
@@ -236,8 +253,22 @@ public class TheGame extends View implements Runnable{
         backRect=new Rect(rectX,rectY,rectEndX,rectEndY);
 */
     }
+    int cbX,cbY;
+    public void setBulletMotion(){
+        Iterator<Bullet> jE = ballEnemy.iterator();
+        while(jE.hasNext()) {
+            Bullet bE = jE.next();
+            motionSide=20*(scaleWidth/1184);
+            cbX= (int) (motionSide*Math.cos(Math.toRadians(-angle)));
+            cbY= (int) (motionSide*Math.sin(Math.toRadians(-angle)));
+            bE.x-=cbX;
+            bE.y-=cbY;
+            // Toast.makeText(getContext(), j+"", Toast.LENGTH_LONG).show();
+            // Toast.makeText(getContext(), b.x+"", Toast.LENGTH_LONG).show();
 
 
+        }
+    }
     public void setenEmiesEnd(){
         Iterator<Enemy> i = enemy.iterator();
         while (i.hasNext()) {
