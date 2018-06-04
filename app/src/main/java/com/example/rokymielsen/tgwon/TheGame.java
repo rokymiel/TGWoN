@@ -64,9 +64,10 @@ public class TheGame extends View implements Runnable{
     TextView tx;
     ProgressBar progressBar;
     int same=0;
-    Rect backRect;
+    BackRect backRect;
+    /*Rect backRect;
     Paint paint= new Paint();
-    int rectX,rectY,rectEndX,rectEndY;
+    int rectX,rectY,rectEndX,rectEndY;*/
 
     public TheGame(final Context context, AttributeSet attrs/*,Canvas canvas*/) {
         super(context,attrs);
@@ -74,19 +75,20 @@ public class TheGame extends View implements Runnable{
         scaleHeight=displaymetrics.heightPixels;
         xStatic =scaleWidth/100;
         yStatic=scaleHeight/100;
-        rectX=20;
+        backRect= new BackRect(scaleWidth*2,scaleHeight*2,20);
+       /* rectX=20;
         rectY=20;
         rectEndX=scaleWidth-rectX;
-        rectEndY=scaleHeight-rectY;
+        rectEndY=scaleHeight-rectY;*/
         hero= new ControlledHero(scaleWidth/2,scaleHeight/2,BitmapFactory.decodeResource(getResources(), R.drawable.alex_legs_strip),BitmapFactory.decodeResource(getResources(), R.drawable.alex_strip),xStatic,yStatic);
         hero.joyAngle=90;
         shotX=50*xStatic;
         shotY=50*yStatic;
 
-        backRect= new Rect(rectX,rectY,rectEndX,rectEndY);
+        /*backRect= new Rect(rectX,rectY,rectEndX,rectEndY);
         paint.setColor(Color.GRAY);
         paint.setStrokeWidth(10);
-        paint.setStyle(Paint.Style.STROKE);
+        paint.setStyle(Paint.Style.STROKE);*/
         enemiesCount=100;
         //enemy.add(new Enemy(900,200));
 
@@ -109,8 +111,11 @@ public class TheGame extends View implements Runnable{
         testCollision();
         heatHero();
         //canvas.drawRect(backRect,paint);
+         backRect.draw(canvas);
          hero.draw(canvas);
          hero.move();
+        // backRect.draw(canvas);
+        // Log.d(TAG,"DDDRRRAAAAWWWW");
 
        // text.setText(killCount);
         Iterator<Bullet> j = ball.iterator();
@@ -171,11 +176,28 @@ public class TheGame extends View implements Runnable{
     int angle=0,strength=0;
 
     public void setMapMotion(int angle, int strength){
-        this.angle=angle;this.strength=strength;
-        setenEmiesEnd();
-       // setRectPosition();
-
+        if(gaming) {
+            this.angle = angle;
+            this.strength = strength;
+            setRectPosition();
+            if (!stop) {
+                setenEmiesEnd();
+                //setSpeedEnemies();
+            }
+        }
     }
+    public void setSpeedEnemies(){
+        Iterator<Enemy> i = enemy.iterator();
+        while (i.hasNext()) {
+            Enemy enemies = i.next();
+            float rndx=rnd.nextInt(200) + hero.x - 100;
+            float rndy=rnd.nextInt(200) + hero.y - 200;
+            enemies.setSpeed(rndx, rndy);
+
+
+        }
+    }
+
     int motionSide=9*(scaleWidth/1184);
     int delY;
     int cX=4,cY=1;
@@ -183,9 +205,28 @@ public class TheGame extends View implements Runnable{
     int k,b;
     float vx,vy;
     int motionRectSide,motionRectX,motionRrectY;
+    boolean stop=false;
     public void setRectPosition(){
-
         motionRectSide=20*(scaleWidth/1184);
+        motionRectX= (int) (motionRectSide*Math.cos(Math.toRadians(-angle)));
+        motionRrectY= (int) (motionRectSide*Math.sin(Math.toRadians(-angle)));
+        if (backRect.x-motionRectX<=hero.x && backRect.eX-motionRectX>=hero.x && backRect.y-motionRrectY<=hero.y && backRect.eY - motionRrectY>= hero.y){
+            backRect.x-=motionRectX;
+            backRect.y-=motionRrectY;
+            backRect.eX-=motionRectX;
+            backRect.eY-=motionRrectY;
+            Log.d(TAG,backRect.x+"");
+            stop=false;
+        }
+        else {
+           /* backRect.x+=(motionRectX/5);
+            backRect.y+=motionRrectY/5;
+            backRect.eX+=motionRectX/5;
+            backRect.eY+=motionRrectY/5;*/
+           stop=true;
+           return;
+        }
+        /*motionRectSide=20*(scaleWidth/1184);
         motionRectX= (int) (motionSide*Math.cos(Math.toRadians(-angle)));
         motionRrectY= (int) (motionSide*Math.sin(Math.toRadians(-angle)));
         rectX-=motionRectX;
@@ -193,7 +234,7 @@ public class TheGame extends View implements Runnable{
         rectEndX-=motionRectX;
         rectEndY-=motionRrectY;
         backRect=new Rect(rectX,rectY,rectEndX,rectEndY);
-
+*/
     }
 
 
@@ -389,7 +430,7 @@ public class TheGame extends View implements Runnable{
                         Thread.sleep(rnd.nextInt(3000) + 1000); //rnd.nextInt(200)+1400,rnd.nextInt(200)+800
                     }
                     enemyDid++;
-                    enemy.add(new Enemy(rnd.nextInt((80000/1184)*xStatic) + (20000/1184)*xStatic, rnd.nextInt((20000/768)*yStatic) + (40000/768)*yStatic, BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3), BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3), xStatic, yStatic));
+                    enemy.add(new Enemy(rnd.nextInt((int) (backRect.eX-backRect.x)) + backRect.x, rnd.nextInt((int) (backRect.eY-backRect.y)) + backRect.y, BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3), BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3), xStatic, yStatic));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
