@@ -49,6 +49,7 @@ public class TheGame extends View implements Runnable{
     private List<Bullet> ball = new ArrayList<Bullet>();
     private List<Bullet> ballEnemy = new ArrayList<Bullet>();
     private List<Enemy> enemy = new ArrayList<Enemy>();
+    private List<Wall> walls = new ArrayList<Wall>();
     float shotX,shotY;
     TextView text;
     boolean gaming=true;
@@ -65,17 +66,35 @@ public class TheGame extends View implements Runnable{
     ProgressBar progressBar;
     int same=0;
     BackRect backRect;
+    Wall testWall;
     /*Rect backRect;
     Paint paint= new Paint();
     int rectX,rectY,rectEndX,rectEndY;*/
 
     public TheGame(final Context context, AttributeSet attrs/*,Canvas canvas*/) {
         super(context,attrs);
+        StorageWall storageWall= new StorageWall();
         scaleWidth=displaymetrics.widthPixels;
         scaleHeight=displaymetrics.heightPixels;
         xStatic =scaleWidth/100;
         yStatic=scaleHeight/100;
-        backRect= new BackRect(scaleWidth*2,scaleHeight*2,20);
+        backRect= new BackRect(scaleWidth*2,scaleHeight*2,(float) 20/1184*scaleWidth);
+        for (int i = 0; i <storageWall.Walls.size() ; i++) {
+            float ax= (float)storageWall.Walls.get(i)[0]/1184*scaleWidth;
+            float ay= (float)storageWall.Walls.get(i)[1]/768*scaleHeight;
+            float aX= (float)storageWall.Walls.get(i)[2]/1184*scaleWidth;
+            float aY= (float)storageWall.Walls.get(i)[3]/768*scaleHeight;
+            Wall wall = new Wall(ax,ay,aX,aY);
+
+            walls.add(wall);
+        }
+        //float a= (float)storageWall.Walls.get(12)[2]/1184*scaleWidth;
+        //Toast.makeText(context,a+"",Toast.LENGTH_SHORT).show();
+       // Log.d(TAG,a+" JHJHJHJHJHJHJHJHJH!JH!J!H!JHJ");
+        //Log.d(TAG,walls.get(12).eX+"!!!!!!!!!!!!!"+scaleWidth);
+
+        //testWall = new Wall(0,0,60,170);
+
        /* rectX=20;
         rectY=20;
         rectEndX=scaleWidth-rectX;
@@ -84,6 +103,10 @@ public class TheGame extends View implements Runnable{
         hero.joyAngle=90;
         shotX=50*xStatic;
         shotY=50*yStatic;
+        //инфа о стенах
+
+        //создание стенок
+
 
         /*backRect= new Rect(rectX,rectY,rectEndX,rectEndY);
         paint.setColor(Color.GRAY);
@@ -105,13 +128,17 @@ public class TheGame extends View implements Runnable{
 
 
     }
-
+boolean bulletWall=false;
     @Override
     protected void onDraw(Canvas canvas) {
         testCollision();
         heatHero();
         //canvas.drawRect(backRect,paint);
-         backRect.draw(canvas);
+        backRect.draw(canvas);
+        for (int i = 0; i <walls.size() ; i++) {
+            walls.get(i).draw(canvas);
+        }
+       // testWall.draw(canvas);
          hero.draw(canvas);
          hero.move();
         // backRect.draw(canvas);
@@ -125,10 +152,26 @@ public class TheGame extends View implements Runnable{
            // Toast.makeText(getContext(), b.x+"", Toast.LENGTH_LONG).show();
 //Удаление пуль(b.x <= scaleWidth*2 && b.x>=-8*xStatic && b.y >=-13*yStatic && b.y <=2*scaleHeight
             if(b.x < backRect.eX-55* (scaleWidth/1184) && b.x>backRect.x+55*(scaleWidth/1184) && b.y >backRect.y+55*(scaleHeight/768) && b.y <backRect.eY-55*(scaleHeight/768) ) {
-                b.onDraw(canvas);
-            } else {
-                j.remove();
-            }
+                for (int i = 0; i < walls.size(); i++) {
+                    if (b.x < walls.get(i).eX + 55 * (scaleWidth / 1184) && b.x > walls.get(i).x - 55 * (scaleWidth / 1184) && b.y > walls.get(i).y - 55 * (scaleHeight / 768) && b.y < walls.get(i).eY + 55 * (scaleHeight / 768)) {
+                        //Log.d(TAG, "GGGGUUUUULEEEEEEEEEEEET");
+                        bulletWall = true;break;
+
+                    } else {
+                        //Log.d(TAG,"GGGG!!!!!!!!!!!!!!!UUUUULEEEEEEEEEEEET");
+                        bulletWall = false;
+
+                    }
+                }
+                    if (!bulletWall) {
+                        b.onDraw(canvas);
+                    } else {
+                        j.remove();
+                    }
+                } else{
+                    j.remove();
+                }
+
         }
         Iterator<Bullet> jE = ballEnemy.iterator();
         while(jE.hasNext()) {
@@ -137,11 +180,27 @@ public class TheGame extends View implements Runnable{
             // Toast.makeText(getContext(), b.x+"", Toast.LENGTH_LONG).show();
 
             if(bE.x < backRect.eX-55*(scaleWidth/1184) && bE.x>backRect.x+55*(scaleWidth/1184) && bE.y >backRect.y+55*(scaleHeight/768) && bE.y <backRect.eY-55*(scaleHeight/768)) { //Удаление пуль
-                bE.onDraw(canvas);
+                for (int i = 0; i < walls.size(); i++) {
+                    if (bE.x < walls.get(i).eX + 55 * (scaleWidth / 1184) && bE.x > walls.get(i).x - 55 * (scaleWidth / 1184) && bE.y > walls.get(i).y - 55 * (scaleHeight / 768) && bE.y < walls.get(i).eY + 55 * (scaleHeight / 768)) {
+                        //Log.d(TAG, "GGGGUUUUULEEEEEEEEEEEET");
+                        bulletWall = true;break;
+
+                    } else {
+                        //Log.d(TAG,"GGGG!!!!!!!!!!!!!!!UUUUULEEEEEEEEEEEET");
+                        bulletWall = false;
+
+                    }
+                }
+                if (!bulletWall) {
+                    bE.onDraw(canvas);
+                } else {
+                    jE.remove();
+                }
             } else {
                 jE.remove();
             }
         }
+        setStopEnemy();
         int enemyFrame=0;
         Iterator<Enemy> i = enemy.iterator();
         while(i.hasNext()) {
@@ -183,9 +242,48 @@ public class TheGame extends View implements Runnable{
             setBulletMotion();
             if (!stop) {
                 setenEmiesEnd();
+
                 setSpeedEnemies();
             }
         }
+    }
+    public void setStopEnemy(){
+        Iterator<Enemy> i = enemy.iterator();
+        while (i.hasNext()) {
+            Enemy enemies = i.next();
+            for (int j = 0; j <walls.size() ; j++) {
+                    if (walls.get(j).x  > enemies.x+enemies.vx || walls.get(j).eX  < enemies.x+enemies.vx || walls.get(j).y> enemies.y+enemies.vy || walls.get(j).eY < enemies.y+enemies.vy){
+                        enemies.enemyWallStop=false;
+                    }else {
+                        enemies.enemyWallStop=true;
+                        //Log.d(TAG,"EEEHYYYYYYYYYYYYYYYYY");
+
+                        break;
+                    }
+                }
+                if (enemies.enemyWallStop) {
+                    /*for (int j = 0; j < walls.size(); j++) {
+                        //walls.get(i).x-=motionRectX;
+                        //walls.get(i).y-=motionRrectY;
+                        //walls.get(i).eX-=motionRectX;
+                        //walls.get(i).eY-=motionRrectY;
+                    }*/
+                    /*backRect.x -= motionRectX;
+                    backRect.y -= motionRrectY;
+                    backRect.eX -= motionRectX;
+                    backRect.eY -= motionRrectY;*/
+
+                    //Log.d(TAG,angle+"");
+
+                /*vx=(chX/motionSide)*3;
+                vy=(chY/motionSide)*3;*/
+                    enemies.vx = 0;
+                    enemies.vy = 0;
+
+
+                }
+            }
+
     }
     public void setSpeedEnemies(){
         Iterator<Enemy> i = enemy.iterator();
@@ -208,6 +306,14 @@ public class TheGame extends View implements Runnable{
                 if(rndy>backRect.eY){
                     rndy=2*backRect.eY-rndy;
                 }
+                /*for (int j = 0; j <walls.size() ; j++) {
+                    if (walls.get(j).x > rndx || walls.get(j).eX < rndx || walls.get(j).y> rndy || walls.get(j).eY < rndy){
+
+                    }else {
+                        //stop=true;
+                        //return;
+                    }
+                }*/
                 enemies.setSpeed(rndx, rndy);
             }
 
@@ -228,11 +334,26 @@ public class TheGame extends View implements Runnable{
         motionRectX= (int) (motionRectSide*Math.cos(Math.toRadians(-angle)));
         motionRrectY= (int) (motionRectSide*Math.sin(Math.toRadians(-angle)));
         if (backRect.x-motionRectX<=hero.x && backRect.eX-motionRectX>=hero.x && backRect.y-motionRrectY<=hero.y && backRect.eY - motionRrectY>= hero.y){
+            for (int i = 0; i <walls.size() ; i++) {
+                if (walls.get(i).x - motionRectX > hero.x || walls.get(i).eX - motionRectX < hero.x || walls.get(i).y-motionRrectY > hero.y || walls.get(i).eY -motionRrectY< hero.y){
+
+                }else {
+                    stop=true;
+                    return;
+                }
+            }
+            for (int i = 0; i <walls.size() ; i++) {
+                walls.get(i).x-=motionRectX;
+                walls.get(i).y-=motionRrectY;
+                walls.get(i).eX-=motionRectX;
+                walls.get(i).eY-=motionRrectY;
+            }
             backRect.x-=motionRectX;
             backRect.y-=motionRrectY;
             backRect.eX-=motionRectX;
             backRect.eY-=motionRrectY;
-            Log.d(TAG,backRect.x+"");
+
+           // Log.d(TAG,backRect.x+"");
             stop=false;
         }
         else {
@@ -269,6 +390,7 @@ public class TheGame extends View implements Runnable{
 
         }
     }
+
     public void setenEmiesEnd(){
         Iterator<Enemy> i = enemy.iterator();
         while (i.hasNext()) {
@@ -321,12 +443,23 @@ public class TheGame extends View implements Runnable{
 
             chX= (int) (motionSide*Math.cos(Math.toRadians(-angle)));
             chY= (int) (motionSide*Math.sin(Math.toRadians(-angle)));
-            //Log.d(TAG,angle+"");
+
+                    //walls.get(i).x-=motionRectX;
+                    //walls.get(i).y-=motionRrectY;
+                    //walls.get(i).eX-=motionRectX;
+                    //walls.get(i).eY-=motionRrectY;
+
+                /*backRect.x -= motionRectX;
+                backRect.y -= motionRrectY;
+                backRect.eX -= motionRectX;
+                backRect.eY -= motionRrectY;*/
+
+                //Log.d(TAG,angle+"");
 
             /*vx=(chX/motionSide)*3;
             vy=(chY/motionSide)*3;*/
-            enemies.x-=chX;
-            enemies.y-=chY;
+                enemies.x -= chX;
+                enemies.y -= chY;
 
 
 /*            this.endX=endX;
@@ -336,7 +469,6 @@ public class TheGame extends View implements Runnable{
             float d =(float)Math.sqrt(vx*vx+vy*vy);
             this.vx=(this.vx/d)*3;
             this.vy=(this.vy/d)*3;*/
-
 
         }
     }
@@ -383,7 +515,7 @@ public class TheGame extends View implements Runnable{
                //(80000/1184)*xStatic
                /* bEndX=((bEndX*100)/1184)*xStatic;
                 bEndY=((bEndY*100)/768)*yStatic;*/
-                Log.d(TAG,getWidth()+"");
+                //Log.d(TAG,getWidth()+"");
                 if (angle>90 && angle<270){
                     bEndX=-bEndX;
                 }
@@ -392,9 +524,9 @@ public class TheGame extends View implements Runnable{
                 //bEndX+=bX;
 
                 ball.add(createSprite(bX, bY, bEndX+bX, bEndY));
-                Log.d(TAG,angle+"");
-                Log.d(TAG,bEndX+bX+"");
-                Log.d(TAG,bEndY+"");
+                //Log.d(TAG,angle+"");
+                //Log.d(TAG,bEndX+bX+"");
+                //Log.d(TAG,bEndY+"");
 
             }
         }
@@ -461,7 +593,26 @@ public class TheGame extends View implements Runnable{
                         Thread.sleep(rnd.nextInt(3000) + 1000); //rnd.nextInt(200)+1400,rnd.nextInt(200)+800
                     }
                     enemyDid++;
-                    enemy.add(new Enemy(rnd.nextInt((int) (backRect.eX-backRect.x)) + backRect.x, rnd.nextInt((int) (backRect.eY-backRect.y)) + backRect.y, BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3), BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3), xStatic, yStatic));
+                    boolean doing=true;
+                    float enemX=0;
+                    float enemY=0;
+                    while (doing) {
+                        enemX= rnd.nextInt((int) (backRect.eX - backRect.x)) + backRect.x;
+                        enemY= rnd.nextInt((int) (backRect.eY - backRect.y)) + backRect.y;
+                        for (int i = 0; i < walls.size(); i++) {
+                            if (walls.get(i).x > enemX || walls.get(i).eX < enemX || walls.get(i).y > enemY || walls.get(i).eY < enemY) {
+                                //enemies.enemyWallStop=false;
+                                doing = false;
+                            } else {
+                                //enemies.enemyWallStop=true;
+                                Log.d(TAG,"RRRRNNNNNNDDDD");
+                                doing = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    enemy.add(new Enemy(enemX, enemY, BitmapFactory.decodeResource(getResources(), R.drawable.enemy_legs_strip3), BitmapFactory.decodeResource(getResources(), R.drawable.enemy_1_strip3), xStatic, yStatic));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -29,6 +29,7 @@ public class Enemy {
     int yEnemy;
     double angle=0;
     int xStatic,yStatic;
+    boolean enemyWallStop=false;
 
 
     Enemy(float x, float y,Bitmap spritesLag, Bitmap sprites,int xStatic,int yStatic){
